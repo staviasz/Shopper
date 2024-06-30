@@ -29,32 +29,32 @@ describe('Email ValueObject', () => {
     expect(sut.value).toEqual({ props: 'email-email@email.com' });
   });
 
-  it('(email$@email.com) should return InvalidEmailFormatError if email contains special character before @', () => {
+  it('Should return InvalidEmailFormatError if email contains special character before @', () => {
     const sut = Email.create('email$@email.com');
     expect(sut.value).toEqual(new InvalidEmailFormatError('email$@email.com'));
   });
 
-  it('(email@email..com) should return InvalidEmailFormatError if email contains two dots in .com', () => {
+  it('Should return InvalidEmailFormatError if email contains two dots in .com', () => {
     const sut = Email.create('email@email..com');
     expect(sut.value).toEqual(new InvalidEmailFormatError('email@email..com'));
   });
 
-  it('(#email@email.com) should return InvalidEmailFormatError if email starts with special character', () => {
+  it('Should return InvalidEmailFormatError if email starts with special character', () => {
     const sut = Email.create('.email@email.com');
     expect(sut.value).toEqual(new InvalidEmailFormatError('.email@email.com'));
   });
 
-  it('(email@email.com@) should return InvalidemailFormatError if email ends with especial character', () => {
+  it('Should return InvalidemailFormatError if email ends with especial character', () => {
     const sut = Email.create('email@email.com@');
     expect(sut.value).toEqual(new InvalidEmailFormatError('email@email.com@'));
   });
 
-  it('(email @email.com) should return InvalidemailFormatError if email contains spaces before @', () => {
+  it('Should return InvalidemailFormatError if email contains spaces before @', () => {
     const sut = Email.create('email @email.com');
     expect(sut.value).toEqual(new InvalidEmailFormatError('email @email.com'));
   });
 
-  it('(email@email .com) should return InvalidemailFormatError if email contains spaces after @', () => {
+  it('Should return InvalidemailFormatError if email contains spaces after @', () => {
     const sut = Email.create('email@email .com');
     expect(sut.value).toEqual(new InvalidEmailFormatError('email@email .com'));
   });

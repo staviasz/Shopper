@@ -11,7 +11,7 @@ import {
 /**
  * @group domain
  * @group models
- * @group models/password
+ * @group models/user
  */
 describe('Password ValueObject', () => {
   it('Should return a Password if password is correct', () => {

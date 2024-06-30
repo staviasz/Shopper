@@ -9,7 +9,7 @@ import {
   PasswordMissingSpecialCharacterError,
 } from '../../errors';
 
-type PossibleErrors =
+type PasswordErrors =
   | PasswordLengthError
   | PasswordHasSpaceError
   | PasswordMissingSpecialCharacterError
@@ -18,12 +18,12 @@ type PossibleErrors =
   | PasswordMissingNumberError;
 
 export class Password extends ValueObject {
-  constructor(password: string) {
+  private constructor(password: string) {
     super(password);
     Object.freeze(password);
   }
 
-  static create(password: string): Either<PossibleErrors, Password> {
+  static create(password: string): Either<PasswordErrors, Password> {
     if (!this.validatePasswordLength(password)) {
       return left(new PasswordLengthError(password.length));
     }

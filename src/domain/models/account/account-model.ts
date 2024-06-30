@@ -5,5 +5,5 @@ export type AccountModel = {
   verifiedAt?: Date | null;
   updatedAt?: Date | null;
   createdAt?: Date | null;
-  profileId?: string | null;
+  // profileId?: string | null;
 };
