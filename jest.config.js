@@ -31,4 +31,6 @@ module.exports = {
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
+  runner: 'groups',
+  testSequencer: './test-sequencer.js',
 };

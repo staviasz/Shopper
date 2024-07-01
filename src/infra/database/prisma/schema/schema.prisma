@@ -12,7 +12,7 @@ model Account {
   email              String              @unique
   password           String
   permissions        String[]
-  verifiedAt         DateTime?           @map("verified_at")
+  isVerified         Boolean?            @map("is_verified")
   acceptedAt         DateTime            @default(now()) @map("accepted_at")
   updatedAt          DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
   createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)

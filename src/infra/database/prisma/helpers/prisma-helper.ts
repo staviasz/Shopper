@@ -8,7 +8,6 @@ export class PrismaHelper {
       this.prisma = new PrismaClient();
       await this.prisma.$connect();
     }
-    console.log('Prisma connected!');
   }
 
   static async disconnect(): Promise<void> {
@@ -16,7 +15,6 @@ export class PrismaHelper {
       await this.prisma.$disconnect();
       this.prisma = null;
     }
-    console.log('Prisma disconected!');
   }
 
   static async getPrisma(): Promise<PrismaClient> {
