@@ -19,7 +19,8 @@ CREATE TABLE "accounts" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "permissions" TEXT[],
-    "verified_at" TIMESTAMP(3),
+    "is_verified" BOOLEAN,
+    "accepted_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(3) NOT NULL,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -38,18 +39,18 @@ CREATE TABLE "ResetPasswordToken" (
 
 -- CreateTable
 CREATE TABLE "profiles" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "updated_at" TIMESTAMPTZ(3) NOT NULL,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "accountId" TEXT NOT NULL,
+    "account_id" TEXT NOT NULL,
 
-    CONSTRAINT "pk_profile_id" PRIMARY KEY ("id")
+    CONSTRAINT "profiles_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "sessions" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "session_token" TEXT NOT NULL,
     "refresh_token" TEXT NOT NULL,
     "account_id" TEXT NOT NULL,
@@ -61,12 +62,12 @@ CREATE TABLE "sessions" (
     "updated_at" TIMESTAMPTZ(3) NOT NULL,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "pk_session_id" PRIMARY KEY ("id")
+    CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "tasks" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "description" TEXT NOT NULL,
@@ -107,13 +108,7 @@ CREATE UNIQUE INDEX "ResetPasswordToken_token_key" ON "ResetPasswordToken"("toke
 CREATE UNIQUE INDEX "ResetPasswordToken_account_id_key" ON "ResetPasswordToken"("account_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "uq_profile_id" ON "profiles"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "uq_account_id" ON "profiles"("accountId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "uq_session_id" ON "sessions"("id");
+CREATE UNIQUE INDEX "profiles_account_id_key" ON "profiles"("account_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "sessions_session_token_key" ON "sessions"("session_token");
@@ -125,7 +120,7 @@ CREATE UNIQUE INDEX "sessions_refresh_token_key" ON "sessions"("refresh_token");
 ALTER TABLE "ResetPasswordToken" ADD CONSTRAINT "ResetPasswordToken_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "accounts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "profiles" ADD CONSTRAINT "fk_profile_account_id" FOREIGN KEY ("accountId") REFERENCES "accounts"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "accounts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "accounts"("id") ON DELETE CASCADE ON UPDATE CASCADE;

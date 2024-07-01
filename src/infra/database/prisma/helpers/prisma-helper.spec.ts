@@ -3,6 +3,12 @@ import { PrismaHelper as sut } from './prisma-helper';
 
 let prisma: PrismaClient;
 
+/**
+ * @group infra
+ * @group prisma
+ * @group infra/database
+ * @group infra/database/prisma
+ */
 describe('Prisma Helper', () => {
   afterAll(async () => {
     await sut.disconnect();

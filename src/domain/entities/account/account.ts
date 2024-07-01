@@ -1,6 +1,6 @@
 import { Entity } from '@/shared/domain';
 import { UniqueEntityId } from '@/shared/domain/unique-entity-id';
-import { Email, Password, CreatedAt, VerifiedAt, UpdatedAt, Permissions } from './value-objects';
+import { Email, Password, Permissions } from './value-objects';
 import { CreateAccountData, CreateAccountResponse } from './account-types';
 import { left, right } from '@/shared/either';
 
@@ -8,9 +8,9 @@ export type AccountProps = {
   email: Email;
   password: Password;
   permissions: Permissions[];
-  verifiedAt?: VerifiedAt;
-  updatedAt?: UpdatedAt;
-  createdAt?: CreatedAt;
+  isVerified?: boolean;
+  updatedAt?: Date;
+  createdAt?: Date;
   // profileId?: string | null;
 };
 
@@ -36,37 +36,31 @@ export class Account extends Entity<AccountProps> {
   //   return this.props.profileId;
   // }
 
-  get verifiedAt(): Date {
-    return this.props.verifiedAt.value;
+  get isVerified(): boolean {
+    return this.props.isVerified;
   }
 
   get updatedAt(): Date {
-    return this.props.updatedAt.value;
+    return this.props.updatedAt;
   }
 
   get createdAt(): Date {
-    return this.props.createdAt.value;
+    return this.props.createdAt;
   }
 
   static create(data: CreateAccountData): CreateAccountResponse {
-    const { email, password, permissions, verifiedAt, createdAt, updatedAt } = data;
+    const { email, password, permissions, isVerified, createdAt, updatedAt } = data;
 
     const emailOrError = Email.create(email);
     const passwordOrError = Password.create(password);
     const permissionsOrErrors = permissions ? permissions.map(permission => Permissions.create(permission)) : [];
     // const profileIdOrError = profileId;
-    const verifiedAtOrError = VerifiedAt.create(verifiedAt);
-    const createdAtOrError = CreatedAt.create(createdAt);
-    const updatedAtOrError = UpdatedAt.create(updatedAt);
 
     const results = [
       emailOrError,
       passwordOrError,
       ...permissionsOrErrors,
       // profileIdOrError,
-      verifiedAtOrError,
-      createdAtOrError,
-      updatedAtOrError,
     ];
 
     for (const result of results) {
@@ -79,9 +73,9 @@ export class Account extends Entity<AccountProps> {
           email: emailOrError.value as Email,
           password: passwordOrError.value as Password,
           permissions: permissionsOrErrors.map(permission => permission.value) as Permissions[],
-          verifiedAt: verifiedAtOrError.value as VerifiedAt,
-          createdAt: createdAtOrError.value as CreatedAt,
-          updatedAt: updatedAtOrError.value as UpdatedAt,
+          isVerified: isVerified,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         },
         new UniqueEntityId(data.id),
       ),

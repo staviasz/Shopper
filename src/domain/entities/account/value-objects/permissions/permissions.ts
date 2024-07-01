@@ -6,7 +6,7 @@ import { Either, right } from '@/shared/either';
 export class Permissions extends ValueObject {
   private constructor(props: string) {
     super(props);
-    Object.freeze(props);
+    Object.freeze(this);
   }
 
   static create(props: string): Either<Error, Permissions> {

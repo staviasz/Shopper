@@ -1,14 +1,6 @@
 import { Either } from '@/shared/either';
 import { Account } from './account';
-import {
-  InvalidEmailFormatError,
-  PasswordHasSpaceError,
-  PasswordLengthError,
-  PasswordMissingHigherCaseLetterError,
-  PasswordMissingLowerCaseLetterError,
-  PasswordMissingNumberError,
-  PasswordMissingSpecialCharacterError,
-} from './errors';
+import { InvalidEmailFormatError, InvalidPasswordFormatError } from './errors';
 // import { CreatedAt, UpdatedAt, VerifiedAt } from './value-objects';
 
 export type CreateAccountData = {
@@ -16,20 +8,12 @@ export type CreateAccountData = {
   email: string;
   password: string;
   permissions: string[];
-  verifiedAt?: Date;
+  isVerified?: boolean;
   updatedAt?: Date;
   createdAt?: Date;
   // profileId?: string | null;
 };
 
-export type UserEntityErrors =
-  | Error
-  | InvalidEmailFormatError
-  | PasswordHasSpaceError
-  | PasswordLengthError
-  | PasswordMissingHigherCaseLetterError
-  | PasswordMissingLowerCaseLetterError
-  | PasswordMissingNumberError
-  | PasswordMissingSpecialCharacterError;
+export type UserEntityErrors = Error | InvalidEmailFormatError | InvalidPasswordFormatError;
 
 export type CreateAccountResponse = Either<UserEntityErrors, Account>;

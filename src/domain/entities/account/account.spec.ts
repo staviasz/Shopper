@@ -11,19 +11,16 @@ describe('Account Entity', () => {
       permissions: ['andar'],
       createdAt: date,
       updatedAt: date,
-      verifiedAt: date,
+      isVerified: true,
     });
 
     const account = result.value as Account;
-    console.log(account.createdAt);
-    console.log(account.updatedAt);
-    console.log(account.verifiedAt);
     expect(account.id).toBe('any_id');
     expect(account.email).toBe('fulano@teste.com');
     expect(account.password).toBe('Abc1234#');
     expect(account.permissions[0]).toBe('andar');
     expect(account.createdAt).toBe(date);
     expect(account.updatedAt).toBe(date);
-    expect(account.verifiedAt).toBe(date);
+    expect(account.isVerified).toBe(true);
   });
 });
