@@ -7,18 +7,18 @@ describe('Title Value Objects', () => {
     const title = Title.create('');
     expect(title.isLeft()).toBeTruthy();
     expect(title.isRight()).toBeFalsy();
-    expect(title.value).toBeInstanceOf(FieldIsRequired);
+    expect(title.value).toEqual(new FieldIsRequired('Título'));
   });
 
   it('Should return error if title has less than 3 characters or more than 50', () => {
     let title = Title.create('ab');
     expect(title.isLeft()).toBeTruthy();
     expect(title.isRight()).toBeFalsy();
-    expect(title.value).toBeInstanceOf(InvalidFormatTitle);
+    expect(title.value).toEqual(new InvalidFormatTitle());
 
     title = Title.create('a'.repeat(51));
     expect(title.isLeft()).toBeTruthy();
     expect(title.isRight()).toBeFalsy();
-    expect(title.value).toBeInstanceOf(InvalidFormatTitle);
+    expect(title.value).toEqual(new InvalidFormatTitle());
   });
 });
