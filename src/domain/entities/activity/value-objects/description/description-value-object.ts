@@ -15,7 +15,7 @@ export class Description extends ValueObject {
     const valueTrim = value.trim();
 
     if (!this.hasDescription(valueTrim)) {
-      return left(new FieldIsRequired('Description'));
+      return left(new FieldIsRequired('Descrição'));
     }
 
     if (!this.hasCorrectDescriptionFormat(valueTrim)) {

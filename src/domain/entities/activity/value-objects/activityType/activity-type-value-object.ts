@@ -15,11 +15,11 @@ export class ActivityType extends ValueObject {
 
   static create(value: TypeActivity): Either<ActivityTypeError, ActivityType> {
     if (!this.hasValue(value)) {
-      return left(new FieldIsRequired('Type'));
+      return left(new FieldIsRequired('Tipo'));
     }
 
     if (!this.isValidValue(value)) {
-      return left(new InvalidFieldsValues('Type', KeysTypeActivity));
+      return left(new InvalidFieldsValues('Tipo', KeysTypeActivity));
     }
     return right(new ActivityType(value));
   }

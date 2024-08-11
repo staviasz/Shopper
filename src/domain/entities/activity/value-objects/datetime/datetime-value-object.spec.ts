@@ -9,7 +9,7 @@ describe('Datetime Value Object', () => {
     const datetime = Datetime.create('' as any);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new FieldIsRequired('Datetime'));
+    expect(datetime.value).toEqual(new FieldIsRequired('Data e hora'));
   });
 
   it('Should error if invalid date', () => {

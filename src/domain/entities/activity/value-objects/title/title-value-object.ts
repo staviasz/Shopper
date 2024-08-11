@@ -15,7 +15,7 @@ export class Title extends ValueObject {
     const valueTrim = value.trim();
 
     if (!this.hasTitle(valueTrim)) {
-      return left(new FieldIsRequired('Title'));
+      return left(new FieldIsRequired('Título'));
     }
 
     if (!this.hasCorrectTitleFormat(valueTrim)) {

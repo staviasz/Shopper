@@ -9,14 +9,14 @@ describe('Activity Value Object', () => {
     const activity = ActivityType.create('' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new FieldIsRequired('Type'));
+    expect(activity.value).toEqual(new FieldIsRequired('Tipo'));
   });
 
   it('Should return error if received invalid value', () => {
     const activity = ActivityType.create('test' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new InvalidFieldsValues('Type', KeysTypeActivity));
+    expect(activity.value).toEqual(new InvalidFieldsValues('Tipo', KeysTypeActivity));
   });
 
   it('Should correct activity type', () => {

@@ -13,7 +13,7 @@ export class Datetime extends ValueObject<Date> {
 
   static create(value: Date): Either<DatetimeError, Datetime> {
     if (!this.hasDatetime(value)) {
-      return left(new FieldIsRequired('Datetime'));
+      return left(new FieldIsRequired('Data e hora'));
     }
 
     if (!this.isDatetimeValid(value)) {
