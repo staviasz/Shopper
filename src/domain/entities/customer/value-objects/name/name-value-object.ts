@@ -15,7 +15,7 @@ export class Name extends ValueObject {
     if (!this.hasName(name)) {
       return left(new FieldIsRequired('Name'));
     }
-    if (!this.isNameValid(name)) {
+    if (!this.isNameValid(name) || !this.isNameLengthValid(name)) {
       return left(new InvalidName());
     }
     return right(new Name(name.trim()));
@@ -27,5 +27,9 @@ export class Name extends ValueObject {
 
   private static isNameValid(name: string): boolean {
     return /^[a-zA-ZÀ-ÿ\s~]+$/.test(name);
+  }
+
+  private static isNameLengthValid(name: string): boolean {
+    return name.length > 3 && name.length < 60;
   }
 }

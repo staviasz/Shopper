@@ -19,6 +19,20 @@ describe('Name Value Object', () => {
     expect(name.value).toEqual(new InvalidName());
   });
 
+  it('Should return error if name is less than 3', () => {
+    const name = Name.create('te');
+    expect(name.isLeft()).toBe(true);
+    expect(name.isRight()).toBe(false);
+    expect(name.value).toEqual(new InvalidName());
+  });
+
+  it('Should return error if name is greater than 60', () => {
+    const name = Name.create('teste'.repeat(13));
+    expect(name.isLeft()).toBe(true);
+    expect(name.isRight()).toBe(false);
+    expect(name.value).toEqual(new InvalidName());
+  });
+
   it('Should correct name', () => {
     const name = Name.create('teste');
     expect(name.value).toEqual({ props: 'teste' });
