@@ -1,7 +1,6 @@
 import { ActivityType as TypeActivity } from '@/domain/entities/activity/types';
-import { FieldIsRequired } from '@/domain/shared/errors';
-import { InvalidActivityType } from '../../errors';
-import { ActivityType } from './activity-value-object';
+import { FieldIsRequired, InvalidFieldsValues } from '@/domain/shared/errors';
+import { ActivityType } from './activity-type-value-object';
 
 const KeysTypeActivity = Object.values(TypeActivity);
 
@@ -17,7 +16,7 @@ describe('Activity Value Object', () => {
     const activity = ActivityType.create('test' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new InvalidActivityType(KeysTypeActivity));
+    expect(activity.value).toEqual(new InvalidFieldsValues('Type', KeysTypeActivity));
   });
 
   it('Should correct activity type', () => {

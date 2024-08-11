@@ -1,8 +1,7 @@
 import { ActivityType as TypeActivity } from '@/domain/entities/activity/types';
-import { FieldIsRequired } from '@/domain/shared/errors';
+import { FieldIsRequired, InvalidFieldsValues } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
-import { InvalidActivityType } from '../../errors';
 
 const KeysTypeActivity = Object.values(TypeActivity);
 
@@ -20,7 +19,7 @@ export class ActivityType extends ValueObject {
     }
 
     if (!this.isValidValue(value)) {
-      return left(new InvalidActivityType(KeysTypeActivity));
+      return left(new InvalidFieldsValues('Type', KeysTypeActivity));
     }
     return right(new ActivityType(value));
   }

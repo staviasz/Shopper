@@ -1,12 +1,23 @@
 import { ActivityEntity } from './activity-entity';
-import { ActivityProps, ActivityType } from './types';
+import { ActivityProps, ActivityType, Categories, WeekDays } from './types';
+
+const now = new Date();
+const futureDate = new Date(now);
+futureDate.setDate(now.getDate() + 10);
 
 const activityData: ActivityProps = {
   id: '550e8400-e29b-41d4-a716-446655440000',
+  customerId: '550e8400-e29b-41d4-a716-446655440000',
   title: 'Activity',
   description: 'Activity description',
-  executeDateTime: new Date(),
+  executeDateTime: futureDate,
   type: ActivityType.task,
+  category: Categories.leisure,
+  weeklyFrequency: {
+    quantityPerWeek: 2,
+    finallyDate: futureDate,
+    weekDays: [WeekDays.monday],
+  },
 };
 
 describe('Activity Entity', () => {
@@ -15,11 +26,15 @@ describe('Activity Entity', () => {
     expect(activity.isRight()).toBeTruthy();
     expect(activity.value).toBeInstanceOf(ActivityEntity);
 
-    const { id, title, description, executeDateTime, type } = activity.value as ActivityEntity;
+    const { id, customerId, title, description, executeDateTime, type, category, weeklyFrequency } =
+      activity.value as ActivityEntity;
     expect(id).toEqual(activityData.id);
+    expect(customerId).toEqual(activityData.customerId);
     expect(title).toEqual(activityData.title);
     expect(description).toEqual(activityData.description);
     expect(executeDateTime).toEqual(activityData.executeDateTime);
     expect(type).toEqual(activityData.type);
+    expect(category).toEqual(activityData.category);
+    expect(weeklyFrequency).toEqual(activityData.weeklyFrequency);
   });
 });
