@@ -1,4 +1,4 @@
-export * from './activityType/activity-type-value-object';
+export * from './activity-type/activity-type-value-object';
 export * from './category/category-value-object';
 export * from './datetime/datetime-value-object';
 export * from './description/description-value-object';

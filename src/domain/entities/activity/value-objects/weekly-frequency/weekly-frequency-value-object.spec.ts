@@ -1,6 +1,6 @@
+import { DateIsInThePast, InvalidDate, InvalidUniqueWeekdays } from '@/domain/entities/activity/errors';
+import { WeekDays, WeeklyFrequency as WeeklyFrequencyType } from '@/domain/entities/activity/types';
 import { InvalidArrayInstance, InvalidFieldPositiveNumber, InvalidFieldsValues } from '@/domain/shared/errors';
-import { DateIsInThePast, InvalidDate, InvalidUniqueWeekdays } from '../../errors';
-import { WeekDays, WeeklyFrequency as WeeklyFrequencyType } from '../../types';
 import { WeeklyFrequency } from './weekly-frequency-value-object';
 
 const now = new Date();

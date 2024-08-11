@@ -1,5 +1,12 @@
+import {
+  ActivityType,
+  Category,
+  Datetime,
+  Description,
+  Title,
+  WeeklyFrequency,
+} from '@/domain/entities/activity/value-objects';
 import { Id } from '@/domain/shared/value-objects/id/id-value-object';
-import { ActivityType, Category, Datetime, Description, Title, WeeklyFrequency } from '../value-objects';
 
 export type ActivityEntityProps = {
   id: Id;

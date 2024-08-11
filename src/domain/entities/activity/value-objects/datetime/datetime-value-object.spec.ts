@@ -1,5 +1,5 @@
+import { DateIsInThePast, InvalidDate } from '@/domain/entities/activity/errors';
 import { FieldIsRequired } from '@/domain/shared/errors';
-import { DateIsInThePast, InvalidDate } from '../../errors';
 import { Datetime } from './datetime-value-object';
 
 const now = new Date();

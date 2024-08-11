@@ -1,7 +1,7 @@
+import { InvalidFormatTitle } from '@/domain/entities/activity/errors';
 import { FieldIsRequired } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
-import { InvalidFormatTitle } from '../../errors';
 
 type TitleError = FieldIsRequired | InvalidFormatTitle;
 

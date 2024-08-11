@@ -1,4 +1,4 @@
-import { ActivityType, Categories, WeeklyFrequency } from '.';
+import { ActivityType, Categories, WeeklyFrequency } from '@/domain/entities/activity/types';
 
 export type ActivityProps = {
   id: string;

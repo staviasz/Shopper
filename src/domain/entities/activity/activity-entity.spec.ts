@@ -1,5 +1,5 @@
+import { ActivityProps, ActivityType, Categories, WeekDays } from '@/domain/entities/activity/types';
 import { ActivityEntity } from './activity-entity';
-import { ActivityProps, ActivityType, Categories, WeekDays } from './types';
 
 const now = new Date();
 const futureDate = new Date(now);
