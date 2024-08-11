@@ -1,9 +1,12 @@
 import { ActivityEntity } from './activity-entity';
+import { ActivityProps, ActivityType } from './types';
 
-const activityData = {
+const activityData: ActivityProps = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   title: 'Activity',
   description: 'Activity description',
+  executeDateTime: new Date(),
+  type: ActivityType.task,
 };
 
 describe('Activity Entity', () => {
@@ -12,9 +15,11 @@ describe('Activity Entity', () => {
     expect(activity.isRight()).toBeTruthy();
     expect(activity.value).toBeInstanceOf(ActivityEntity);
 
-    const { id, title, description } = activity.value as ActivityEntity;
+    const { id, title, description, executeDateTime, type } = activity.value as ActivityEntity;
     expect(id).toEqual(activityData.id);
     expect(title).toEqual(activityData.title);
     expect(description).toEqual(activityData.description);
+    expect(executeDateTime).toEqual(activityData.executeDateTime);
+    expect(type).toEqual(activityData.type);
   });
 });
