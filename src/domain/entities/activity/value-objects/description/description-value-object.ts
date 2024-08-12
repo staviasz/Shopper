@@ -1,28 +1,28 @@
-import { InvalidFormatDescription } from '@/domain/entities/activity/errors';
-import { FieldIsRequired } from '@/domain/shared/errors';
+import { InvalidFormatDescriptionError } from '@/domain/entities/activity/errors';
+import { FieldIsRequiredError } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
 
-type DescriptionError = FieldIsRequired | InvalidFormatDescription;
+type DescriptionError = FieldIsRequiredError | InvalidFormatDescriptionError;
 
-export class Description extends ValueObject {
+export class DescriptionValueObject extends ValueObject {
   private constructor(value: string) {
     super(value);
     Object.freeze(this);
   }
 
-  static create(value: string): Either<DescriptionError, Description> {
+  static create(value: string): Either<DescriptionError, DescriptionValueObject> {
     const valueTrim = value.trim();
 
     if (!this.hasDescription(valueTrim)) {
-      return left(new FieldIsRequired('Descrição'));
+      return left(new FieldIsRequiredError('Descrição'));
     }
 
     if (!this.hasCorrectDescriptionFormat(valueTrim)) {
-      return left(new InvalidFormatDescription());
+      return left(new InvalidFormatDescriptionError());
     }
 
-    return right(new Description(valueTrim));
+    return right(new DescriptionValueObject(valueTrim));
   }
 
   private static hasDescription(description: string): boolean {

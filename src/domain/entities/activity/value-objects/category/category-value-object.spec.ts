@@ -1,28 +1,28 @@
-import { Categories } from '@/domain/entities/activity/types';
-import { FieldIsRequired, InvalidFieldsValues } from '@/domain/shared/errors';
-import { Category } from './category-value-object';
+import { CategoriesEnumType } from '@/domain/entities/activity/types';
+import { FieldIsRequiredError, InvalidFieldsValuesError } from '@/domain/shared/errors';
+import { CategoryValueObject } from './category-value-object';
 
-const KeysCategories = Object.values(Categories);
+const KeysCategories = Object.values(CategoriesEnumType);
 
 describe('Category Value Object', () => {
   it('Should return error if received empty value', () => {
-    const activity = Category.create('' as any);
+    const activity = CategoryValueObject.create('' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new FieldIsRequired('Categoria'));
+    expect(activity.value).toEqual(new FieldIsRequiredError('Categoria'));
   });
 
   it('Should return error if received invalid value', () => {
-    const activity = Category.create('test' as any);
+    const activity = CategoryValueObject.create('test' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new InvalidFieldsValues('Categoria', KeysCategories));
+    expect(activity.value).toEqual(new InvalidFieldsValuesError('Categoria', KeysCategories));
   });
 
   it('Should correct category ', () => {
-    const activity = Category.create(Categories.career);
+    const activity = CategoryValueObject.create(CategoriesEnumType.career);
     expect(activity.isLeft()).toBeFalsy();
     expect(activity.isRight()).toBeTruthy();
-    expect(activity.value).toEqual({ props: Categories.career });
+    expect(activity.value).toEqual({ props: CategoriesEnumType.career });
   });
 });

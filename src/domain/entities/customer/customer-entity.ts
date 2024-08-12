@@ -1,5 +1,5 @@
 import { CustomerEntityType, CustomerType, ResponseCustomerEntityType } from '@/domain/entities/customer/types';
-import { Id } from '@/domain/shared/value-objects/id/id-value-object';
+import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object';
 import { left, right } from '@/shared/either';
 import { EmailValueObject, NameValueObject } from './value-objects';
 
@@ -21,7 +21,7 @@ export class CustomerEntity {
   }
 
   static create({ id, name, email }: CustomerType): ResponseCustomerEntityType {
-    const idOrError = Id.create(id);
+    const idOrError = IdValueObject.create(id);
     const nameOrError = NameValueObject.create(name);
     const emailOrError = EmailValueObject.create(email);
 
@@ -35,7 +35,7 @@ export class CustomerEntity {
 
     return right(
       new CustomerEntity({
-        id: idOrError.value as Id,
+        id: idOrError.value as IdValueObject,
         name: nameOrError.value as NameValueObject,
         email: emailOrError.value as EmailValueObject,
       }),

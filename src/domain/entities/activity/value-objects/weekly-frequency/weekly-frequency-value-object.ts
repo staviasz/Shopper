@@ -1,38 +1,47 @@
-import { WeekDays, WeeklyFrequency as WeeklyFrequencyType } from '@/domain/entities/activity/types';
-import { InvalidArrayInstance, InvalidFieldPositiveNumber, InvalidFieldsValues } from '@/domain/shared/errors';
+import { WeekDaysEnumType, WeeklyFrequencyType } from '@/domain/entities/activity/types';
+import {
+  DatetimeErrorType,
+  DatetimeValueObject,
+} from '@/domain/entities/activity/value-objects/datetime/datetime-value-object';
+import {
+  InvalidArrayInstanceError,
+  InvalidFieldPositiveNumberError,
+  InvalidFieldsValuesError,
+} from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
-import { InvalidUniqueWeekdays } from '../../errors';
-import { Datetime } from '../datetime/datetime-value-object';
+import { InvalidUniqueWeekdaysError } from '../../errors';
 
-type WeeklyFrequencyErrors = InvalidFieldPositiveNumber | WeekDaysErrors;
-type WeekDaysAccepted = WeekDays[] | void;
-type WeekDaysErrors = InvalidArrayInstance;
+type WeekDaysAcceptedType = WeekDaysEnumType[] | void;
+type WeekDaysErrorsType = InvalidArrayInstanceError | InvalidFieldsValuesError | InvalidUniqueWeekdaysError;
 
-const keysWeekDays = Object.values(WeekDays);
+type WeeklyFrequencyErrorsType = InvalidFieldPositiveNumberError | WeekDaysErrorsType | DatetimeErrorType;
+type ResponseWeeklyFrequencyType = Either<WeeklyFrequencyErrorsType, WeeklyFrequencyValueObject>;
 
-export class WeeklyFrequency extends ValueObject<WeeklyFrequencyType> {
+const keysWeekDays = Object.values(WeekDaysEnumType);
+
+export class WeeklyFrequencyValueObject extends ValueObject<WeeklyFrequencyType> {
   private constructor(props: WeeklyFrequencyType) {
     super(props);
     Object.freeze(this);
   }
 
-  static create(props: WeeklyFrequencyType): Either<WeeklyFrequencyErrors, WeeklyFrequency> {
+  static create(props: WeeklyFrequencyType): ResponseWeeklyFrequencyType {
     if (!this.quantityPerWeekIsValidNumber(props.quantityPerWeek)) {
-      return left(new InvalidFieldPositiveNumber('Quantidade semanal'));
+      return left(new InvalidFieldPositiveNumberError('Quantidade semanal'));
     }
 
     const validateWeekDays = this.validWeekDays(props.weekDays);
     if (validateWeekDays.isLeft()) {
-      return validateWeekDays as unknown as Either<WeeklyFrequencyErrors, WeeklyFrequency>;
+      return validateWeekDays as unknown as ResponseWeeklyFrequencyType;
     }
 
-    const finallyDateOrUndefined = props.finallyDate && Datetime.create(props.finallyDate);
+    const finallyDateOrUndefined = props.finallyDate && DatetimeValueObject.create(props.finallyDate);
     if (finallyDateOrUndefined && finallyDateOrUndefined.isLeft()) {
-      return finallyDateOrUndefined as unknown as Either<WeeklyFrequencyErrors, WeeklyFrequency>;
+      return finallyDateOrUndefined as unknown as ResponseWeeklyFrequencyType;
     }
 
-    return right(new WeeklyFrequency(props));
+    return right(new WeeklyFrequencyValueObject(props));
   }
 
   private static quantityPerWeekIsValidNumber(quantityPerWeek?: number): boolean {
@@ -42,13 +51,14 @@ export class WeeklyFrequency extends ValueObject<WeeklyFrequencyType> {
     return true;
   }
 
-  private static validWeekDays(weekDays?: WeekDays[]): Either<WeekDaysErrors, WeekDaysAccepted> {
+  private static validWeekDays(weekDays?: WeekDaysEnumType[]): Either<WeekDaysErrorsType, WeekDaysAcceptedType> {
     if (weekDays) {
-      if (!this.isInstanceOfArray(weekDays)) return left(new InvalidArrayInstance());
+      if (!this.isInstanceOfArray(weekDays)) return left(new InvalidArrayInstanceError());
 
-      if (!this.valueIsCorrectWeekDays(weekDays)) return left(new InvalidFieldsValues('Dia da semana', keysWeekDays));
+      if (!this.valueIsCorrectWeekDays(weekDays))
+        return left(new InvalidFieldsValuesError('Dia da semana', keysWeekDays));
 
-      if (!this.valuesIsUnique(weekDays)) return left(new InvalidUniqueWeekdays());
+      if (!this.valuesIsUnique(weekDays)) return left(new InvalidUniqueWeekdaysError());
     }
 
     return right(weekDays);
@@ -58,7 +68,7 @@ export class WeeklyFrequency extends ValueObject<WeeklyFrequencyType> {
     return Array.isArray(value);
   }
 
-  private static valueIsCorrectWeekDays(array: WeekDays[]): boolean {
+  private static valueIsCorrectWeekDays(array: WeekDaysEnumType[]): boolean {
     for (const element of array) {
       if (!keysWeekDays.includes(element)) return false;
     }
@@ -66,7 +76,7 @@ export class WeeklyFrequency extends ValueObject<WeeklyFrequencyType> {
     return true;
   }
 
-  private static valuesIsUnique(array: WeekDays[]): boolean {
+  private static valuesIsUnique(array: WeekDaysEnumType[]): boolean {
     return new Set(array).size === array.length;
   }
 }

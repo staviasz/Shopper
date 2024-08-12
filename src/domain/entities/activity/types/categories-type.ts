@@ -1,4 +1,4 @@
-export enum Categories {
+export enum CategoriesEnumType {
   career = 'Career',
   finance = 'Finance',
   studies = 'Studies',

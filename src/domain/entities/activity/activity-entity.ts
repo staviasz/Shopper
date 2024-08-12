@@ -1,22 +1,22 @@
 import {
-  ActivityEntityProps,
-  ActivityProps,
-  ResponseEntityActivity,
-  WeeklyFrequency as WeeklyFrequencyType,
+  ActivityEntityType,
+  ActivityType,
+  ResponseEntityActivityType,
+  WeeklyFrequencyType,
 } from '@/domain/entities/activity/types';
 import {
-  ActivityType,
-  Category,
-  Datetime,
-  Description,
-  Title,
-  WeeklyFrequency,
+  ActivityTypeValueObject,
+  CategoryValueObject,
+  DatetimeValueObject,
+  DescriptionValueObject,
+  TitleValueObject,
+  WeeklyFrequencyValueObject,
 } from '@/domain/entities/activity/value-objects';
-import { Id } from '@/domain/shared/value-objects/id/id-value-object';
+import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object';
 import { left, right } from '@/shared/either';
 
 export class ActivityEntity {
-  private constructor(private props: ActivityEntityProps) {
+  private constructor(private props: ActivityEntityType) {
     Object.freeze(this);
   }
 
@@ -52,16 +52,16 @@ export class ActivityEntity {
     return this.props.weeklyFrequency?.value;
   }
 
-  static create(props: ActivityProps): ResponseEntityActivity {
+  static create(props: ActivityType): ResponseEntityActivityType {
     const { id, customerId, title, description, executeDateTime, type, category, weeklyFrequency } = props;
 
-    const idOrError = Id.create(id);
-    const customerIdOrError = Id.create(customerId);
-    const titleOrError = Title.create(title);
-    const descriptionOrError = Description.create(description);
-    const executeDateTimeOrError = Datetime.create(executeDateTime);
-    const typeOrError = ActivityType.create(type);
-    const categoryOrError = Category.create(category);
+    const idOrError = IdValueObject.create(id);
+    const customerIdOrError = IdValueObject.create(customerId);
+    const titleOrError = TitleValueObject.create(title);
+    const descriptionOrError = DescriptionValueObject.create(description);
+    const executeDateTimeOrError = DatetimeValueObject.create(executeDateTime);
+    const categoryOrError = CategoryValueObject.create(category);
+    const typeOrError = ActivityTypeValueObject.create(type);
 
     const results = [
       idOrError,
@@ -73,7 +73,7 @@ export class ActivityEntity {
       categoryOrError,
     ];
 
-    const weeklyFrequencyOrError = weeklyFrequency ? WeeklyFrequency.create(weeklyFrequency) : undefined;
+    const weeklyFrequencyOrError = weeklyFrequency && WeeklyFrequencyValueObject.create(weeklyFrequency);
     weeklyFrequencyOrError && results.push(weeklyFrequencyOrError as any); // typed with any to avoid putting all types in the array
 
     for (const result of results) {
@@ -84,14 +84,14 @@ export class ActivityEntity {
 
     return right(
       new ActivityEntity({
-        id: idOrError.value as Id,
-        customerId: customerIdOrError.value as Id,
-        title: titleOrError.value as Title,
-        description: descriptionOrError.value as Description,
-        executeDateTime: executeDateTimeOrError.value as Datetime,
-        type: typeOrError.value as ActivityType,
-        category: categoryOrError.value as Category,
-        weeklyFrequency: weeklyFrequencyOrError?.value as WeeklyFrequency,
+        id: idOrError.value as IdValueObject,
+        customerId: customerIdOrError.value as IdValueObject,
+        title: titleOrError.value as TitleValueObject,
+        description: descriptionOrError.value as DescriptionValueObject,
+        executeDateTime: executeDateTimeOrError.value as DatetimeValueObject,
+        type: typeOrError.value as ActivityTypeValueObject,
+        category: categoryOrError.value as CategoryValueObject,
+        weeklyFrequency: weeklyFrequencyOrError?.value as WeeklyFrequencyValueObject,
       }),
     );
   }

@@ -4,13 +4,13 @@ import { Either, left, right } from '@/shared/either';
 
 type IdErrors = FieldIsRequiredError | InvalidFieldError;
 
-export class Id extends ValueObject {
+export class IdValueObject extends ValueObject {
   private constructor(value: string) {
     super(value);
     Object.freeze(this);
   }
 
-  static create(id: string): Either<IdErrors, Id> {
+  static create(id: string): Either<IdErrors, IdValueObject> {
     if (!this.hasId(id)) {
       return left(new FieldIsRequiredError('id'));
     }
@@ -19,7 +19,7 @@ export class Id extends ValueObject {
       return left(new InvalidFieldError('id'));
     }
 
-    return right(new Id(id));
+    return right(new IdValueObject(id));
   }
 
   private static hasId(id: string): boolean {

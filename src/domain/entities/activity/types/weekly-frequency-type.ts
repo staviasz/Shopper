@@ -1,4 +1,4 @@
-export enum WeekDays {
+export enum WeekDaysEnumType {
   monday = 'monday',
   tuesday = 'tuesday',
   wednesday = 'wednesday',
@@ -8,8 +8,8 @@ export enum WeekDays {
   sunday = 'sunday',
 }
 
-export type WeeklyFrequency = {
+export type WeeklyFrequencyType = {
   quantityPerWeek?: number;
-  weekDays?: WeekDays[];
+  weekDays?: WeekDaysEnumType[];
   finallyDate?: Date;
 };

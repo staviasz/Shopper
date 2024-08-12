@@ -1,35 +1,35 @@
-import { DateIsInThePast, InvalidDate } from '@/domain/entities/activity/errors';
-import { FieldIsRequired } from '@/domain/shared/errors';
-import { Datetime } from './datetime-value-object';
+import { DateIsInThePastError, InvalidDateError } from '@/domain/entities/activity/errors';
+import { FieldIsRequiredError } from '@/domain/shared/errors';
+import { DatetimeValueObject } from './datetime-value-object';
 
 const now = new Date();
 
 describe('Datetime Value Object', () => {
   it('Should return error if received empty value', () => {
-    const datetime = Datetime.create('' as any);
+    const datetime = DatetimeValueObject.create('' as any);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new FieldIsRequired('Data e hora'));
+    expect(datetime.value).toEqual(new FieldIsRequiredError('Data e hora'));
   });
 
   it('Should error if invalid date', () => {
-    const datetime = Datetime.create(now.toString() as any);
+    const datetime = DatetimeValueObject.create(now.toString() as any);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new InvalidDate());
+    expect(datetime.value).toEqual(new InvalidDateError());
   });
 
   it('Should return error if the date is in the past', () => {
-    const datetime = Datetime.create(now);
+    const datetime = DatetimeValueObject.create(now);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new DateIsInThePast());
+    expect(datetime.value).toEqual(new DateIsInThePastError());
   });
 
   it('Should correct datetime', () => {
     const futureDate = new Date(now);
     futureDate.setDate(now.getDate() + 10);
-    const datetime = Datetime.create(futureDate);
+    const datetime = DatetimeValueObject.create(futureDate);
     expect(datetime.value).toEqual({ props: futureDate });
   });
 });

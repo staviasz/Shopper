@@ -1,24 +1,24 @@
-import { InvalidFormatDescription } from '@/domain/entities/activity/errors';
-import { FieldIsRequired } from '@/domain/shared/errors';
-import { Description } from './description-value-object';
+import { InvalidFormatDescriptionError } from '@/domain/entities/activity/errors';
+import { FieldIsRequiredError } from '@/domain/shared/errors';
+import { DescriptionValueObject } from './description-value-object';
 
 describe('Description Value Objects', () => {
   it('Should return error if description is empty', () => {
-    const description = Description.create('');
+    const description = DescriptionValueObject.create('');
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new FieldIsRequired('Descrição'));
+    expect(description.value).toEqual(new FieldIsRequiredError('Descrição'));
   });
 
   it('Should return error if description has less than 10 characters or more than 500', () => {
-    let description = Description.create('ab');
+    let description = DescriptionValueObject.create('ab');
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new InvalidFormatDescription());
+    expect(description.value).toEqual(new InvalidFormatDescriptionError());
 
-    description = Description.create('a'.repeat(501));
+    description = DescriptionValueObject.create('a'.repeat(501));
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new InvalidFormatDescription());
+    expect(description.value).toEqual(new InvalidFormatDescriptionError());
   });
 });

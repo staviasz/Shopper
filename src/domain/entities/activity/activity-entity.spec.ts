@@ -1,22 +1,22 @@
-import { ActivityProps, ActivityType, Categories, WeekDays } from '@/domain/entities/activity/types';
+import { ActivityEnumType, ActivityType, CategoriesEnumType, WeekDaysEnumType } from '@/domain/entities/activity/types';
 import { ActivityEntity } from './activity-entity';
 
 const now = new Date();
 const futureDate = new Date(now);
 futureDate.setDate(now.getDate() + 10);
 
-const activityData: ActivityProps = {
+const activityData: ActivityType = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   customerId: '550e8400-e29b-41d4-a716-446655440000',
   title: 'Activity',
   description: 'Activity description',
   executeDateTime: futureDate,
-  type: ActivityType.task,
-  category: Categories.leisure,
+  type: ActivityEnumType.task,
+  category: CategoriesEnumType.leisure,
   weeklyFrequency: {
     quantityPerWeek: 2,
     finallyDate: futureDate,
-    weekDays: [WeekDays.monday],
+    weekDays: [WeekDaysEnumType.monday],
   },
 };
 

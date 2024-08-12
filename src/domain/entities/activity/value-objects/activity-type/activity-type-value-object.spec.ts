@@ -1,28 +1,28 @@
-import { ActivityType as TypeActivity } from '@/domain/entities/activity/types';
-import { FieldIsRequired, InvalidFieldsValues } from '@/domain/shared/errors';
-import { ActivityType } from './activity-type-value-object';
+import { FieldIsRequiredError, InvalidFieldsValuesError } from '@/domain/shared/errors';
+import { ActivityEnumType } from '../../types';
+import { ActivityTypeValueObject } from './activity-type-value-object';
 
-const KeysTypeActivity = Object.values(TypeActivity);
+const KeysTypeActivity = Object.values(ActivityEnumType);
 
 describe('Activity Value Object', () => {
   it('Should return error if received empty value', () => {
-    const activity = ActivityType.create('' as any);
+    const activity = ActivityTypeValueObject.create('' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new FieldIsRequired('Tipo'));
+    expect(activity.value).toEqual(new FieldIsRequiredError('Tipo'));
   });
 
   it('Should return error if received invalid value', () => {
-    const activity = ActivityType.create('test' as any);
+    const activity = ActivityTypeValueObject.create('test' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new InvalidFieldsValues('Tipo', KeysTypeActivity));
+    expect(activity.value).toEqual(new InvalidFieldsValuesError('Tipo', KeysTypeActivity));
   });
 
   it('Should correct activity type', () => {
-    const activity = ActivityType.create(TypeActivity.task);
+    const activity = ActivityTypeValueObject.create(ActivityEnumType.task);
     expect(activity.isLeft()).toBeFalsy();
     expect(activity.isRight()).toBeTruthy();
-    expect(activity.value).toEqual({ props: TypeActivity.task });
+    expect(activity.value).toEqual({ props: ActivityEnumType.task });
   });
 });
