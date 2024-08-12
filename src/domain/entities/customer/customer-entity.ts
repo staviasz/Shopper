@@ -1,10 +1,10 @@
-import { CustomerEntityProps, CustomerProps, ResponseCustomerEntityProps } from '@/domain/entities/customer/types';
+import { CustomerEntityType, CustomerType, ResponseCustomerEntityType } from '@/domain/entities/customer/types';
 import { Id } from '@/domain/shared/value-objects/id/id-value-object';
 import { left, right } from '@/shared/either';
-import { Email, Name } from './value-objects';
+import { EmailValueObject, NameValueObject } from './value-objects';
 
 export class CustomerEntity {
-  private constructor(private props: CustomerEntityProps) {
+  private constructor(private props: CustomerEntityType) {
     Object.freeze(this);
   }
 
@@ -20,10 +20,10 @@ export class CustomerEntity {
     return this.props.email.value;
   }
 
-  static create({ id, name, email }: CustomerProps): ResponseCustomerEntityProps {
+  static create({ id, name, email }: CustomerType): ResponseCustomerEntityType {
     const idOrError = Id.create(id);
-    const nameOrError = Name.create(name);
-    const emailOrError = Email.create(email);
+    const nameOrError = NameValueObject.create(name);
+    const emailOrError = EmailValueObject.create(email);
 
     const results = [idOrError, nameOrError, emailOrError];
 
@@ -36,8 +36,8 @@ export class CustomerEntity {
     return right(
       new CustomerEntity({
         id: idOrError.value as Id,
-        name: nameOrError.value as Name,
-        email: emailOrError.value as Email,
+        name: nameOrError.value as NameValueObject,
+        email: emailOrError.value as EmailValueObject,
       }),
     );
   }

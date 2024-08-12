@@ -1,4 +1,4 @@
-import { FieldIsRequired, InvalidField } from '@/domain/shared/errors';
+import { FieldIsRequiredError, InvalidFieldError } from '@/domain/shared/errors';
 import { Id } from './id-value-object';
 
 describe('IdValueObject', () => {
@@ -7,7 +7,7 @@ describe('IdValueObject', () => {
 
     expect(id.isLeft()).toBeTruthy();
     expect(id.isRight()).toBeFalsy();
-    expect(id.value).toBeInstanceOf(FieldIsRequired);
+    expect(id.value).toBeInstanceOf(FieldIsRequiredError);
   });
 
   it('should return error when id is invalid', () => {
@@ -15,7 +15,7 @@ describe('IdValueObject', () => {
 
     expect(id.isLeft()).toBeTruthy();
     expect(id.isRight()).toBeFalsy();
-    expect(id.value).toBeInstanceOf(InvalidField);
+    expect(id.value).toBeInstanceOf(InvalidFieldError);
   });
 
   it('should return id when id is valid', () => {

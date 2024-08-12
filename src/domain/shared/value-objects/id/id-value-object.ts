@@ -1,8 +1,8 @@
-import { FieldIsRequired, InvalidField } from '@/domain/shared/errors';
+import { FieldIsRequiredError, InvalidFieldError } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
 
-type IdErrors = FieldIsRequired | InvalidField;
+type IdErrors = FieldIsRequiredError | InvalidFieldError;
 
 export class Id extends ValueObject {
   private constructor(value: string) {
@@ -12,11 +12,11 @@ export class Id extends ValueObject {
 
   static create(id: string): Either<IdErrors, Id> {
     if (!this.hasId(id)) {
-      return left(new FieldIsRequired('id'));
+      return left(new FieldIsRequiredError('id'));
     }
 
     if (!this.isValidId(id)) {
-      return left(new InvalidField('id'));
+      return left(new InvalidFieldError('id'));
     }
 
     return right(new Id(id));
@@ -29,7 +29,5 @@ export class Id extends ValueObject {
   private static isValidId(id: string): boolean {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidRegex.test(id);
-    // return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
-    // return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   }
 }

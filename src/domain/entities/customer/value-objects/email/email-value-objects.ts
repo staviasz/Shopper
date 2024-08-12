@@ -1,23 +1,23 @@
-import { FieldIsRequired, InvalidField } from '@/domain/shared/errors';
+import { FieldIsRequiredError, InvalidFieldError } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
 
-type ErrorsEmail = InvalidField | FieldIsRequired;
+type ErrorsEmailType = InvalidFieldError | FieldIsRequiredError;
 
-export class Email extends ValueObject {
+export class EmailValueObject extends ValueObject {
   private constructor(email: string) {
     super(email);
     Object.freeze(this);
   }
 
-  static create(email: string): Either<ErrorsEmail, Email> {
+  static create(email: string): Either<ErrorsEmailType, EmailValueObject> {
     if (!this.hasEmail(email)) {
-      return left(new FieldIsRequired('Email'));
+      return left(new FieldIsRequiredError('Email'));
     }
     if (!this.isEmailValid(email)) {
-      return left(new InvalidField('Email'));
+      return left(new InvalidFieldError('Email'));
     }
-    return right(new Email(email));
+    return right(new EmailValueObject(email));
   }
 
   private static hasEmail(email: string): boolean {

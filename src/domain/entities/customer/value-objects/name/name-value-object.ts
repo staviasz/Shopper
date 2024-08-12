@@ -1,24 +1,24 @@
-import { InvalidName } from '@/domain/entities/customer/errors';
-import { FieldIsRequired } from '@/domain/shared/errors';
+import { InvalidNameError } from '@/domain/entities/customer/errors';
+import { FieldIsRequiredError } from '@/domain/shared/errors';
 import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
 
-type ErrorsName = InvalidName | FieldIsRequired;
+type ErrorsNameType = InvalidNameError | FieldIsRequiredError;
 
-export class Name extends ValueObject {
+export class NameValueObject extends ValueObject {
   private constructor(name: string) {
     super(name);
     Object.freeze(this);
   }
 
-  static create(name: string): Either<ErrorsName, Name> {
+  static create(name: string): Either<ErrorsNameType, NameValueObject> {
     if (!this.hasName(name)) {
-      return left(new FieldIsRequired('Name'));
+      return left(new FieldIsRequiredError('Name'));
     }
     if (!this.isNameValid(name) || !this.isNameLengthValid(name)) {
-      return left(new InvalidName());
+      return left(new InvalidNameError());
     }
-    return right(new Name(name.trim()));
+    return right(new NameValueObject(name.trim()));
   }
 
   private static hasName(name: string): boolean {

@@ -1,1 +1,1 @@
-export * from './invalid-name';
+export * from './invalid-name-error';
