@@ -1,11 +1,16 @@
-import { ActivityEnumType, ActivityType, CategoriesEnumType, WeekDaysEnumType } from '@/domain/entities/activity/types';
+import {
+  ActivityEnumType,
+  ActivityModel,
+  CategoriesEnumType,
+  WeekDaysEnumType,
+} from '@/domain/entities/activity/types';
 import { ActivityEntity } from './activity-entity';
 
 const now = new Date();
 const futureDate = new Date(now);
 futureDate.setDate(now.getDate() + 10);
 
-const activityData: ActivityType = {
+const activityData: ActivityModel = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   customerId: '550e8400-e29b-41d4-a716-446655440000',
   title: 'Activity',

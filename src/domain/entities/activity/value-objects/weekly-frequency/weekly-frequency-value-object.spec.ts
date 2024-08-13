@@ -1,5 +1,5 @@
 import { DateIsInThePastError, InvalidDateError, InvalidUniqueWeekdaysError } from '@/domain/entities/activity/errors';
-import { WeekDaysEnumType, WeeklyFrequencyType } from '@/domain/entities/activity/types';
+import { WeekDaysEnumType, WeeklyFrequencyModel } from '@/domain/entities/activity/types';
 import {
   InvalidArrayInstanceError,
   InvalidFieldPositiveNumberError,
@@ -11,7 +11,7 @@ const now = new Date();
 const futureDate = new Date(now);
 futureDate.setDate(now.getDate() + 10);
 
-const weeklyFrequencyData: WeeklyFrequencyType = {
+const weeklyFrequencyData: WeeklyFrequencyModel = {
   quantityPerWeek: 2,
   weekDays: [],
   finallyDate: futureDate,

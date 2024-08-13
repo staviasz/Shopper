@@ -8,7 +8,7 @@ import {
   WeeklyFrequencyValueObject,
 } from '../value-objects';
 
-export type ActivityEntityType = {
+export type ActivityEntityModel = {
   id: IdValueObject;
   customerId: IdValueObject;
   title: TitleValueObject;

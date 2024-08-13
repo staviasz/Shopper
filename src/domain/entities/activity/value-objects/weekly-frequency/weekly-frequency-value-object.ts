@@ -1,4 +1,4 @@
-import { WeekDaysEnumType, WeeklyFrequencyType } from '@/domain/entities/activity/types';
+import { WeekDaysEnumType, WeeklyFrequencyModel } from '@/domain/entities/activity/types';
 import {
   DatetimeErrorType,
   DatetimeValueObject,
@@ -20,13 +20,13 @@ type ResponseWeeklyFrequencyType = Either<WeeklyFrequencyErrorsType, WeeklyFrequ
 
 const keysWeekDays = Object.values(WeekDaysEnumType);
 
-export class WeeklyFrequencyValueObject extends ValueObject<WeeklyFrequencyType> {
-  private constructor(props: WeeklyFrequencyType) {
+export class WeeklyFrequencyValueObject extends ValueObject<WeeklyFrequencyModel> {
+  private constructor(props: WeeklyFrequencyModel) {
     super(props);
     Object.freeze(this);
   }
 
-  static create(props: WeeklyFrequencyType): ResponseWeeklyFrequencyType {
+  static create(props: WeeklyFrequencyModel): ResponseWeeklyFrequencyType {
     if (!this.quantityPerWeekIsValidNumber(props.quantityPerWeek)) {
       return left(new InvalidFieldPositiveNumberError('Quantidade semanal'));
     }

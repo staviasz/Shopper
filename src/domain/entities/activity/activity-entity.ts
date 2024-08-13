@@ -1,8 +1,8 @@
 import {
-  ActivityEntityType,
-  ActivityType,
+  ActivityEntityModel,
+  ActivityModel,
   ResponseEntityActivityType,
-  WeeklyFrequencyType,
+  WeeklyFrequencyModel,
 } from '@/domain/entities/activity/types';
 import {
   ActivityTypeValueObject,
@@ -16,7 +16,7 @@ import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object'
 import { left, right } from '@/shared/either';
 
 export class ActivityEntity {
-  private constructor(private props: ActivityEntityType) {
+  private constructor(private props: ActivityEntityModel) {
     Object.freeze(this);
   }
 
@@ -48,11 +48,11 @@ export class ActivityEntity {
     return this.props.category.value;
   }
 
-  get weeklyFrequency(): WeeklyFrequencyType | undefined {
+  get weeklyFrequency(): WeeklyFrequencyModel | undefined {
     return this.props.weeklyFrequency?.value;
   }
 
-  static create(props: ActivityType): ResponseEntityActivityType {
+  static create(props: ActivityModel): ResponseEntityActivityType {
     const { id, customerId, title, description, executeDateTime, type, category, weeklyFrequency } = props;
 
     const idOrError = IdValueObject.create(id);
