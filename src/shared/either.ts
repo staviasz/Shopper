@@ -1,6 +1,11 @@
-export type Either<L extends Error, R> = Left<L, R> | Right<L, R>;
+export interface CustomError extends Error {
+  errorFormatted?: () => { errors: string[] };
+}
 
-class Left<L extends Error, R> {
+type EitherError = CustomError | CustomError[] | Error | Error[];
+
+export type Either<L extends EitherError, R> = Left<L, R> | Right<L, R>;
+class Left<L extends EitherError, R> {
   constructor(readonly value: L) {}
 
   isLeft(): this is Left<L, R> {
@@ -12,7 +17,7 @@ class Left<L extends Error, R> {
   }
 }
 
-class Right<L extends Error, R> {
+class Right<L extends EitherError, R> {
   constructor(readonly value: R) {}
 
   isLeft(): this is Left<L, R> {
@@ -24,12 +29,12 @@ class Right<L extends Error, R> {
   }
 }
 
-export const left = <L extends Error, R>(error: L): Left<L, R> => {
+export const left = <L extends EitherError, R>(error: L): Left<L, R> => {
   return new Left<L, R>(error);
 };
 
-export function right<L extends Error, R extends void>(result?: R): Right<L, R>;
-export function right<L extends Error, R>(result: R): Right<L, R>;
-export function right<L extends Error, R>(result: R): Right<L, R> {
+export function right<L extends EitherError, R extends void>(result?: R): Right<L, R>;
+export function right<L extends EitherError, R>(result: R): Right<L, R>;
+export function right<L extends EitherError, R>(result: R): Right<L, R> {
   return new Right<L, R>(result);
 }

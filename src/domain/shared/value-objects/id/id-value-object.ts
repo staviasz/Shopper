@@ -1,5 +1,5 @@
+import { ValueObject } from '@/domain/entities/value-object';
 import { FieldIsRequiredError, InvalidFieldError } from '@/domain/shared/errors';
-import { ValueObject } from '@/shared/domain';
 import { Either, left, right } from '@/shared/either';
 
 type IdErrors = FieldIsRequiredError | InvalidFieldError;
@@ -10,16 +10,27 @@ export class IdValueObject extends ValueObject {
     Object.freeze(this);
   }
 
-  static create(id: string): Either<IdErrors, IdValueObject> {
+  static create(id: string): Either<IdErrors[], IdValueObject> {
+    const errors = this.validate(id);
+
+    if (errors) {
+      return left(errors);
+    }
+    return right(new IdValueObject(id));
+  }
+
+  private static validate(id: string): Error[] | null {
+    this.clearErrors();
+
     if (!this.hasId(id)) {
-      return left(new FieldIsRequiredError('id'));
+      this.addError(new FieldIsRequiredError('id'));
     }
 
     if (!this.isValidId(id)) {
-      return left(new InvalidFieldError('id'));
+      this.addError(new InvalidFieldError('id'));
     }
 
-    return right(new IdValueObject(id));
+    return this.errors();
   }
 
   private static hasId(id: string): boolean {

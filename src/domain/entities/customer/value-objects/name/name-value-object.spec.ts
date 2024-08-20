@@ -8,29 +8,29 @@ describe('Name Value Object', () => {
 
     expect(name.isLeft()).toBe(true);
     expect(name.isRight()).toBe(false);
-    expect(name.value).toEqual(new FieldIsRequiredError('Name'));
+    expect(name.value).toEqual([new FieldIsRequiredError('Name'), new InvalidNameError()]);
   });
 
   it('Should throw error if name is invalid', () => {
     let name = NameValueObject.create('teste 1');
-    expect(name.value).toEqual(new InvalidNameError());
+    expect(name.value).toEqual([new InvalidNameError()]);
 
     name = NameValueObject.create('teste *');
-    expect(name.value).toEqual(new InvalidNameError());
+    expect(name.value).toEqual([new InvalidNameError()]);
   });
 
   it('Should return error if name is less than 3', () => {
     const name = NameValueObject.create('te');
     expect(name.isLeft()).toBe(true);
     expect(name.isRight()).toBe(false);
-    expect(name.value).toEqual(new InvalidNameError());
+    expect(name.value).toEqual([new InvalidNameError()]);
   });
 
   it('Should return error if name is greater than 60', () => {
     const name = NameValueObject.create('teste'.repeat(13));
     expect(name.isLeft()).toBe(true);
     expect(name.isRight()).toBe(false);
-    expect(name.value).toEqual(new InvalidNameError());
+    expect(name.value).toEqual([new InvalidNameError()]);
   });
 
   it('Should correct name', () => {

@@ -6,14 +6,14 @@ describe('Email Value Object', () => {
     const email = EmailValueObject.create('');
     expect(email.isLeft()).toBe(true);
     expect(email.isRight()).toBe(false);
-    expect(email.value).toEqual(new FieldIsRequiredError('Email'));
+    expect(email.value).toEqual([new FieldIsRequiredError('Email'), new InvalidFieldError('Email')]);
   });
 
   it('Should return error if email is invalid', () => {
     const email = EmailValueObject.create('teste');
     expect(email.isLeft()).toBe(true);
     expect(email.isRight()).toBe(false);
-    expect(email.value).toEqual(new InvalidFieldError('Email'));
+    expect(email.value).toEqual([new InvalidFieldError('Email')]);
   });
 
   it('Should correct email', () => {

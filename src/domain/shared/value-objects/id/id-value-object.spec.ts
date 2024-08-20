@@ -7,7 +7,7 @@ describe('IdValueObject', () => {
 
     expect(id.isLeft()).toBeTruthy();
     expect(id.isRight()).toBeFalsy();
-    expect(id.value).toBeInstanceOf(FieldIsRequiredError);
+    expect(id.value).toEqual([new FieldIsRequiredError('id'), new InvalidFieldError('id')]);
   });
 
   it('should return error when id is invalid', () => {
@@ -15,7 +15,7 @@ describe('IdValueObject', () => {
 
     expect(id.isLeft()).toBeTruthy();
     expect(id.isRight()).toBeFalsy();
-    expect(id.value).toBeInstanceOf(InvalidFieldError);
+    expect(id.value).toEqual([new InvalidFieldError('id')]);
   });
 
   it('should return id when id is valid', () => {
