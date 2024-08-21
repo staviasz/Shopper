@@ -1,7 +1,6 @@
 import { ResponseCustomerEntityType } from '@/domain/entities/customer/types';
 import { Entity } from '@/domain/entities/entity';
 import { FormatedEntityArrayErrors } from '@/domain/shared/errors/';
-import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object';
 import { left, right } from '@/shared/either';
 import { CustomerEntityModel, CustomerModel } from './models';
 import { AcceptTermsType, AcceptTermsValueObject, EmailValueObject, NameValueObject } from './value-objects';
@@ -25,19 +24,6 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
   }
 
   static create(data: CustomerModel): ResponseCustomerEntityType {
-    // const idOrError = IdValueObject.create(id);
-    // const nameOrError = NameValueObject.create(name);
-    // const emailOrError = EmailValueObject.create(email);
-    // const acceptedTermsOrError = AcceptTermsValueObject.create(acceptedTerms);
-
-    // const results = [idOrError, nameOrError, emailOrError, acceptedTermsOrError];
-
-    // for (const result of results) {
-    //   if (result.isLeft()) {
-    //     this.addError(result.value);
-    //     // return left(result.value);
-    //   }
-    // }
     const result = this.validate(data) as CustomerEntityModel;
 
     if (!result) {
@@ -47,7 +33,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
 
     return right(
       new CustomerEntity({
-        id: result.id as IdValueObject,
+        id: result.id as string,
         name: result.name as NameValueObject,
         email: result.email as EmailValueObject,
         acceptedTerms: result.acceptedTerms as AcceptTermsValueObject,
@@ -58,7 +44,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
   static validate({ id, name, email, acceptedTerms }: CustomerModel): void | CustomerEntityModel {
     this.clearErrors();
 
-    const idOrError = IdValueObject.create(id);
+    const idOrError = this.validateId(id);
     const nameOrError = NameValueObject.create(name);
     const emailOrError = EmailValueObject.create(email);
     const acceptedTermsOrError = AcceptTermsValueObject.create(acceptedTerms);
@@ -74,7 +60,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
     if (this.errors()) return;
 
     return {
-      id: idOrError.value as IdValueObject,
+      id: idOrError.value as string,
       name: nameOrError.value as NameValueObject,
       email: emailOrError.value as EmailValueObject,
       acceptedTerms: acceptedTermsOrError.value as AcceptTermsValueObject,

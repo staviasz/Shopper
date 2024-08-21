@@ -1,13 +1,29 @@
-import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object';
+import { UuidAdapter } from '@/infra/id/uuid-adapter/uuid-adapter';
+import { Either, left, right } from '@/shared/either';
+import { InvalidFieldError } from '../shared/errors';
 
-type Props = { id: IdValueObject } & Record<string, any>;
+type Props = { id: string } & Record<string, any>;
 export abstract class Entity<T extends Props> {
   private static _errors: Error[] = [];
+  protected readonly _id: string;
 
-  protected constructor(protected readonly props: T) {}
+  protected constructor(protected readonly props: T) {
+    this._id = props.id;
+  }
 
   get id(): string {
-    return this.props.id.value;
+    return this._id;
+  }
+
+  protected static validateId(id?: string): Either<InvalidFieldError, string> {
+    const uuid = new UuidAdapter();
+
+    if (id && !uuid.validate(id)) {
+      return left(new InvalidFieldError('id'));
+    }
+
+    const returnId = id ?? uuid.build();
+    return right(returnId);
   }
 
   protected static errors(): Error[] | null {

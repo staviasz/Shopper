@@ -2,7 +2,7 @@ export interface CustomError extends Error {
   errorFormatted?: () => { errors: string[] };
 }
 
-type EitherError = CustomError | CustomError[] | Error | Error[];
+type EitherError = CustomError | CustomError[];
 
 export type Either<L extends EitherError, R> = Left<L, R> | Right<L, R>;
 class Left<L extends EitherError, R> {
@@ -14,6 +14,11 @@ class Left<L extends EitherError, R> {
 
   isRight(): this is Right<L, R> {
     return false;
+  }
+  errorFormatted() {
+    if (!Array.isArray(this.value) && this.value.errorFormatted) {
+      return this.value.errorFormatted();
+    }
   }
 }
 

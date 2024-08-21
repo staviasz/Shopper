@@ -23,12 +23,11 @@ describe('Customer Entity', () => {
   });
 
   it('Should return all errors', () => {
-    const customer = CustomerEntity.create({} as any);
+    const customer = CustomerEntity.create({ id: 'dffmdpbmpmf' } as any);
 
     expect(customer.isLeft()).toBeTruthy();
-    expect((customer as unknown as FormatedEntityArrayErrors).value.errorFormatted()).toEqual({
+    expect((customer as unknown as FormatedEntityArrayErrors).errorFormatted()).toEqual({
       errors: [
-        'id is required',
         'id is invalid',
         'Name is required',
         'O nome deve ter pelo menos 3 caracteres e apenas letras',
