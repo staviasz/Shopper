@@ -9,14 +9,17 @@ describe('Category Value Object', () => {
     const activity = CategoryValueObject.create('' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new FieldIsRequiredError('Categoria'));
+    expect(activity.value).toEqual([
+      new FieldIsRequiredError('Categoria'),
+      new InvalidFieldsValuesError('Categoria', KeysCategories),
+    ]);
   });
 
   it('Should return error if received invalid value', () => {
     const activity = CategoryValueObject.create('test' as any);
     expect(activity.isLeft()).toBeTruthy();
     expect(activity.isRight()).toBeFalsy();
-    expect(activity.value).toEqual(new InvalidFieldsValuesError('Categoria', KeysCategories));
+    expect(activity.value).toEqual([new InvalidFieldsValuesError('Categoria', KeysCategories)]);
   });
 
   it('Should correct category ', () => {

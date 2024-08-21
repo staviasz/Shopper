@@ -4,6 +4,7 @@ import {
   CategoriesEnumType,
   WeekDaysEnumType,
 } from '@/domain/entities/activity/types';
+import { FormatedEntityArrayErrors } from '@/domain/shared/errors';
 import { ActivityEntity } from './activity-entity';
 
 const now = new Date();
@@ -41,5 +42,32 @@ describe('Activity Entity', () => {
     expect(type).toEqual(activityData.type);
     expect(category).toEqual(activityData.category);
     expect(weeklyFrequency).toEqual(activityData.weeklyFrequency);
+  });
+
+  it('Should return all errors in activity', () => {
+    const activity = ActivityEntity.create({
+      weeklyFrequency: { quantityPerWeek: 0, weekDays: ['any_value'], finallyDate: 'any_value' },
+    } as any);
+
+    expect(activity.isLeft()).toBeTruthy();
+    expect(activity.isRight()).toBeFalsy();
+    expect((activity as unknown as FormatedEntityArrayErrors).errorFormatted()).toEqual({
+      errors: [
+        'O campo Título é obrigatório',
+        'O título deve ter entre 3 e 50 caracteres',
+        'O campo Descrição é obrigatório',
+        'A descrição deve ter entre 3 e 50 caracteres',
+        'O campo Data e hora é obrigatório',
+        'Este campo deve ser uma data válida',
+        'O campo Tipo é obrigatório',
+        'O campo Tipo deve ter um dos seguintes valores: habit, task',
+        'O campo Categoria é obrigatório',
+        'O campo Categoria deve ter um dos seguintes valores: Career, Finance, Studies, Health, Leisure, Productivity, Several',
+        'O campo Quantidade semanal deve ser um número positivo',
+        'O campo Dias da semana deve ter um dos seguintes valores: monday, tuesday, wednesday, thursday, friday, saturday, sunday',
+        'Este campo deve ser uma data válida',
+        'A data não pode ser no passado',
+      ],
+    });
   });
 });

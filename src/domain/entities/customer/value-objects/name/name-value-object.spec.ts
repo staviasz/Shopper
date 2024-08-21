@@ -8,7 +8,7 @@ describe('Name Value Object', () => {
 
     expect(name.isLeft()).toBe(true);
     expect(name.isRight()).toBe(false);
-    expect(name.value).toEqual([new FieldIsRequiredError('Name'), new InvalidNameError()]);
+    expect(name.value).toEqual([new FieldIsRequiredError('nome'), new InvalidNameError()]);
   });
 
   it('Should throw error if name is invalid', () => {

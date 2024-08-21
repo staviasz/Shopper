@@ -24,14 +24,14 @@ describe('Weekly Frequency Value Object', () => {
     const weeklyFrequency = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, quantityPerWeek: '2' as any });
     expect(weeklyFrequency.isLeft()).toBeTruthy();
     expect(weeklyFrequency.isRight()).toBeFalsy();
-    expect(weeklyFrequency.value).toEqual(new InvalidFieldPositiveNumberError('Quantidade semanal'));
+    expect(weeklyFrequency.value).toEqual([new InvalidFieldPositiveNumberError('Quantidade semanal')]);
   });
 
   it('Should return error if quantity per week is less than 1', () => {
     const weeklyFrequency = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, quantityPerWeek: 0 });
     expect(weeklyFrequency.isLeft()).toBeTruthy();
     expect(weeklyFrequency.isRight()).toBeFalsy();
-    expect(weeklyFrequency.value).toEqual(new InvalidFieldPositiveNumberError('Quantidade semanal'));
+    expect(weeklyFrequency.value).toEqual([new InvalidFieldPositiveNumberError('Quantidade semanal')]);
   });
 
   it('Should correct weekly frequency without quantity per week', () => {
@@ -47,14 +47,18 @@ describe('Weekly Frequency Value Object', () => {
     const weeklyFrequency = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, weekDays: 'test' as any });
     expect(weeklyFrequency.isLeft()).toBeTruthy();
     expect(weeklyFrequency.isRight()).toBeFalsy();
-    expect(weeklyFrequency.value).toEqual(new InvalidArrayInstanceError());
+    expect(weeklyFrequency.value).toEqual([
+      new InvalidArrayInstanceError(),
+      new InvalidFieldsValuesError('Dias da semana', keysWeekDays),
+      new InvalidUniqueWeekdaysError(),
+    ]);
   });
 
   it('Should return error if week days is not a valid week day', () => {
     const weeklyFrequency = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, weekDays: ['test'] as any });
     expect(weeklyFrequency.isLeft()).toBeTruthy();
     expect(weeklyFrequency.isRight()).toBeFalsy();
-    expect(weeklyFrequency.value).toEqual(new InvalidFieldsValuesError('Dia da semana', keysWeekDays));
+    expect(weeklyFrequency.value).toEqual([new InvalidFieldsValuesError('Dias da semana', keysWeekDays)]);
   });
 
   it("should return error if values in weekdays isn't unique", () => {
@@ -64,7 +68,7 @@ describe('Weekly Frequency Value Object', () => {
     });
     expect(weeklyFrequency.isLeft()).toBeTruthy();
     expect(weeklyFrequency.isRight()).toBeFalsy();
-    expect(weeklyFrequency.value).toEqual(new InvalidUniqueWeekdaysError());
+    expect(weeklyFrequency.value).toEqual([new InvalidUniqueWeekdaysError()]);
   });
 
   it('Should correct weekly frequency without week days', () => {
@@ -79,14 +83,14 @@ describe('Weekly Frequency Value Object', () => {
     const datetime = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, finallyDate: 2 as any });
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new InvalidDateError());
+    expect(datetime.value).toEqual([new InvalidDateError(), new DateIsInThePastError()]);
   });
 
   it('Should return error if the finally date is in the past', () => {
     const datetime = WeeklyFrequencyValueObject.create({ ...weeklyFrequencyData, finallyDate: now });
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new DateIsInThePastError());
+    expect(datetime.value).toEqual([new DateIsInThePastError()]);
   });
 
   it('Should correct weekly frequency without finally date', () => {

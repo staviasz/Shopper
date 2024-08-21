@@ -1,4 +1,3 @@
-import { IdValueObject } from '@/domain/shared/value-objects/id/id-value-object';
 import {
   ActivityTypeValueObject,
   CategoryValueObject,
@@ -9,8 +8,8 @@ import {
 } from '../value-objects';
 
 export type ActivityEntityModel = {
-  id: IdValueObject;
-  customerId: IdValueObject;
+  id: string;
+  customerId: string;
   title: TitleValueObject;
   description: DescriptionValueObject;
   executeDateTime: DatetimeValueObject;

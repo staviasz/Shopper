@@ -28,11 +28,11 @@ describe('Customer Entity', () => {
     expect(customer.isLeft()).toBeTruthy();
     expect((customer as unknown as FormatedEntityArrayErrors).errorFormatted()).toEqual({
       errors: [
-        'id is invalid',
-        'Name is required',
+        'O campo id está inválido',
+        'O campo nome é obrigatório',
         'O nome deve ter pelo menos 3 caracteres e apenas letras',
-        'Email is required',
-        'Email is invalid',
+        'O campo Email é obrigatório',
+        'O campo Email está inválido',
         'Os termos de uso devem ser aceitos',
       ],
     });

@@ -9,21 +9,21 @@ describe('Datetime Value Object', () => {
     const datetime = DatetimeValueObject.create('' as any);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new FieldIsRequiredError('Data e hora'));
+    expect(datetime.value).toEqual([new FieldIsRequiredError('Data e hora'), new InvalidDateError()]);
   });
 
   it('Should error if invalid date', () => {
     const datetime = DatetimeValueObject.create(now.toString() as any);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new InvalidDateError());
+    expect(datetime.value).toEqual([new InvalidDateError(), new DateIsInThePastError()]);
   });
 
   it('Should return error if the date is in the past', () => {
     const datetime = DatetimeValueObject.create(now);
     expect(datetime.isLeft()).toBeTruthy();
     expect(datetime.isRight()).toBeFalsy();
-    expect(datetime.value).toEqual(new DateIsInThePastError());
+    expect(datetime.value).toEqual([new DateIsInThePastError()]);
   });
 
   it('Should correct datetime', () => {

@@ -25,7 +25,7 @@ export class NameValueObject extends ValueObject {
     this.clearErrors();
 
     if (!this.hasName(name)) {
-      this.addError(new FieldIsRequiredError('Name'));
+      this.addError(new FieldIsRequiredError('nome'));
     }
     if (!this.isNameValid(name) || !this.isNameLengthValid(name)) {
       this.addError(new InvalidNameError());

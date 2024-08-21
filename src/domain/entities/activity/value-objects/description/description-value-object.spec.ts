@@ -7,18 +7,18 @@ describe('Description Value Objects', () => {
     const description = DescriptionValueObject.create('');
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new FieldIsRequiredError('Descrição'));
+    expect(description.value).toEqual([new FieldIsRequiredError('Descrição'), new InvalidFormatDescriptionError()]);
   });
 
   it('Should return error if description has less than 10 characters or more than 500', () => {
     let description = DescriptionValueObject.create('ab');
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new InvalidFormatDescriptionError());
+    expect(description.value).toEqual([new InvalidFormatDescriptionError()]);
 
     description = DescriptionValueObject.create('a'.repeat(501));
     expect(description.isLeft()).toBeTruthy();
     expect(description.isRight()).toBeFalsy();
-    expect(description.value).toEqual(new InvalidFormatDescriptionError());
+    expect(description.value).toEqual([new InvalidFormatDescriptionError()]);
   });
 });
