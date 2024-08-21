@@ -1,5 +1,5 @@
 export type CustomerModel = {
-  id: string;
+  id?: string;
   name: string;
   email: string;
   acceptedTerms: boolean;

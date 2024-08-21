@@ -6,5 +6,5 @@ export type InputCustomerDto = Omit<CustomerModel, 'id'>;
 export type OutputCustomerDto = { errors: string[] } | void;
 
 export interface RegisterCustomerContractDomain extends ContractDomain {
-  perform(data: InputCustomerDto): OutputCustomerDto;
+  perform(data: InputCustomerDto): Promise<OutputCustomerDto>;
 }

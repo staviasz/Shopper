@@ -12,8 +12,8 @@ import {
   TitleValueObject,
   WeeklyFrequencyValueObject,
 } from '@/domain/entities/activity/value-objects';
-import { FormatedEntityArrayErrors } from '@/domain/shared/errors';
 import { left, right } from '@/shared/either';
+import { makeErrorsInObjOfArray } from '@/shared/make-errors-in-obj-of-array';
 import { Entity } from '../entity';
 
 export class ActivityEntity extends Entity<ActivityEntityModel> {
@@ -54,7 +54,7 @@ export class ActivityEntity extends Entity<ActivityEntityModel> {
     const result = this.validate(props) as ActivityEntityModel;
 
     if (!result) {
-      const formattedErrors = new FormatedEntityArrayErrors(this.formatErrors());
+      const formattedErrors = makeErrorsInObjOfArray(this.formatErrors());
       return left(formattedErrors);
     }
 

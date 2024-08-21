@@ -1,8 +1,7 @@
-import { FormatedEntityArrayErrors } from '@/domain/shared/errors';
+import { FormatedEntityArrayErrors } from '@/shared/errors';
 import { CustomerEntity } from './customer-entity';
 
 const dataCustomer = {
-  id: '550e8400-e29b-41d4-a716-446655440000',
   name: 'Customer',
   email: 'email@teste.com',
   acceptedTerms: true,
@@ -16,7 +15,7 @@ describe('Customer Entity', () => {
 
     const { id, name, email, acceptedTerms } = customer.value as CustomerEntity;
 
-    expect(id).toEqual(dataCustomer.id);
+    expect(id).toBeTruthy();
     expect(name).toEqual(dataCustomer.name);
     expect(email).toEqual(dataCustomer.email);
     expect(acceptedTerms).toEqual(dataCustomer.acceptedTerms);

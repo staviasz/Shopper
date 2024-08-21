@@ -4,7 +4,7 @@ import {
   CategoriesEnumType,
   WeekDaysEnumType,
 } from '@/domain/entities/activity/types';
-import { FormatedEntityArrayErrors } from '@/domain/shared/errors';
+import { FormatedEntityArrayErrors } from '@/shared/errors';
 import { ActivityEntity } from './activity-entity';
 
 const now = new Date();

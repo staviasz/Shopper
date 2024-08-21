@@ -1,6 +1,6 @@
-import { InputCustomerModel } from '@/domain/contracts';
+import { InputCustomerDto } from '@/domain/contracts';
 
-export type InputRegisterCustomerDto = InputCustomerModel & {
+export type InputRegisterCustomerDto = InputCustomerDto & {
   password: string;
   acceptedTerms?: boolean;
 };

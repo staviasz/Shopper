@@ -1,7 +1,7 @@
 import { ResponseCustomerEntityType } from '@/domain/entities/customer/types';
 import { Entity } from '@/domain/entities/entity';
-import { FormatedEntityArrayErrors } from '@/domain/shared/errors/';
 import { left, right } from '@/shared/either';
+import { makeErrorsInObjOfArray } from '@/shared/make-errors-in-obj-of-array';
 import { CustomerEntityModel, CustomerModel } from './models';
 import { AcceptTermsType, AcceptTermsValueObject, EmailValueObject, NameValueObject } from './value-objects';
 
@@ -27,7 +27,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
     const result = this.validate(data) as CustomerEntityModel;
 
     if (!result) {
-      const formattedErrors = new FormatedEntityArrayErrors(this.formatErrors());
+      const formattedErrors = makeErrorsInObjOfArray(this.formatErrors());
       return left(formattedErrors);
     }
 
