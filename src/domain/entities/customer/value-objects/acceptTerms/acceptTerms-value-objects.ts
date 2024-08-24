@@ -1,11 +1,10 @@
 import { AcceptedTermsError } from '@/domain/entities/customer/errors';
 import { ValueObject } from '@/domain/entities/value-object';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 
-export type AcceptTermsType = { acceptTerms: boolean };
-
-export class AcceptTermsValueObject extends ValueObject<AcceptTermsType> {
-  private constructor({ acceptTerms }) {
+export class AcceptTermsValueObject extends ValueObject<boolean> {
+  private constructor(acceptTerms: boolean) {
     super(acceptTerms);
   }
 
@@ -19,6 +18,6 @@ export class AcceptTermsValueObject extends ValueObject<AcceptTermsType> {
     if (errors) {
       return left(errors);
     }
-    return right(new AcceptTermsValueObject({ acceptTerms }));
+    return right(new AcceptTermsValueObject(acceptTerms));
   }
 }

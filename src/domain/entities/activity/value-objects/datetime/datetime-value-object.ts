@@ -1,7 +1,8 @@
 import { DateIsInThePastError, InvalidDateError } from '@/domain/entities/activity/errors';
 import { ValueObject } from '@/domain/entities/value-object';
 import { FieldIsRequiredError } from '@/domain/shared/errors';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 
 export type DatetimeErrorType = FieldIsRequiredError | InvalidDateError | DateIsInThePastError;
 

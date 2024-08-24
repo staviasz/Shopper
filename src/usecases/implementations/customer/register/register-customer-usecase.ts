@@ -1,28 +1,46 @@
-import { RegisterCustomerContractDomain } from '@/domain/contracts';
+import type {
+  RegisterCustomerContractDomain,
+  RegisterCustomerResponseType,
+} from '@/domain/contracts';
 import { CustomerEntity } from '@/domain/entities/customer/customer-entity';
-import { CustomerRepositoryContractsUsecase } from '@/usecases/contracts/database';
-import { OutputCustomerDto } from './../../../../domain/contracts/customer/register-customer-contract-domain';
-import { InputRegisterCustomerDto } from './register-customer-dto';
+import { left, right } from '@/shared/either';
+import type { CriptographyContractUsecase } from '@/usecases/contracts/cryptography/cryptography-contract-usecase.ts';
+import type {
+  CustomerRepositoryContractsUsecase,
+  CustomerRepositoryDto,
+} from '@/usecases/contracts/database';
+import type { InputRegisterCustomerDto } from './register-customer-dto';
 
 export class RegisterCustomerUsecase implements RegisterCustomerContractDomain {
-  constructor(private repository: CustomerRepositoryContractsUsecase) {}
-  async perform(data: InputRegisterCustomerDto): Promise<OutputCustomerDto> {
+  constructor(
+    private repository: CustomerRepositoryContractsUsecase,
+    private cryptography: CriptographyContractUsecase,
+  ) {}
+  async perform(data: InputRegisterCustomerDto): RegisterCustomerResponseType {
     const entity = CustomerEntity.create({ ...data });
 
     if (entity.isLeft()) {
-      return entity.errorFormatted();
+      return left(entity.value);
     }
 
     const existsEmail = await this.repository.findByField('email', data.email);
 
-    if (existsEmail.isLeft()) {
-      return existsEmail.errorFormatted();
+    if (existsEmail.isRight() && existsEmail.value) {
+      return left({ errors: ['O email informado já existe'] });
     }
 
-    const result = await this.repository.create(entity.value);
-    if (result.isLeft()) {
-      return result.errorFormatted();
-    }
-    return;
+    const passwordHashed = await this.cryptography.encrypter(data.password);
+
+    const newCustomer: CustomerRepositoryDto = {
+      id: entity.value.id,
+      name: entity.value.name,
+      email: entity.value.email,
+      acceptedTerms: entity.value.acceptedTerms,
+      password: passwordHashed,
+    };
+
+    await this.repository.create(newCustomer);
+
+    return right();
   }
 }

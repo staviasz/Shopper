@@ -1,6 +1,7 @@
 import { InvalidFormatTitleError } from '@/domain/entities/activity/errors';
 import { ValueObject } from '@/domain/entities/value-object';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 import { FieldIsRequiredError } from './../../../../shared/errors/field-is-required-error';
 
 type TitleError = FieldIsRequiredError | InvalidFormatTitleError;

@@ -1,20 +1,26 @@
-import { WeekDaysEnumType, WeeklyFrequencyModel } from '@/domain/entities/activity/types';
-import {
-  DatetimeErrorType,
-  DatetimeValueObject,
-} from '@/domain/entities/activity/value-objects/datetime/datetime-value-object';
+import type { WeeklyFrequencyModel } from '@/domain/entities/activity/types';
+import { WeekDaysEnumType } from '@/domain/entities/activity/types';
+import type { DatetimeErrorType } from '@/domain/entities/activity/value-objects/datetime/datetime-value-object';
+import { DatetimeValueObject } from '@/domain/entities/activity/value-objects/datetime/datetime-value-object';
 import { ValueObject } from '@/domain/entities/value-object';
 import {
   InvalidArrayInstanceError,
   InvalidFieldPositiveNumberError,
   InvalidFieldsValuesError,
 } from '@/domain/shared/errors';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 import { InvalidUniqueWeekdaysError } from '../../errors';
 
-type WeekDaysErrorsType = InvalidArrayInstanceError | InvalidFieldsValuesError | InvalidUniqueWeekdaysError;
+type WeekDaysErrorsType =
+  | InvalidArrayInstanceError
+  | InvalidFieldsValuesError
+  | InvalidUniqueWeekdaysError;
 
-type WeeklyFrequencyErrorsType = InvalidFieldPositiveNumberError | WeekDaysErrorsType | DatetimeErrorType;
+type WeeklyFrequencyErrorsType =
+  | InvalidFieldPositiveNumberError
+  | WeekDaysErrorsType
+  | DatetimeErrorType;
 type ResponseWeeklyFrequencyType = Either<WeeklyFrequencyErrorsType[], WeeklyFrequencyValueObject>;
 
 const keysWeekDays = Object.values(WeekDaysEnumType);
@@ -49,9 +55,7 @@ export class WeeklyFrequencyValueObject extends ValueObject<WeeklyFrequencyModel
 
     const finallyDateOrUndefined = finallyDate && DatetimeValueObject.create(finallyDate);
     if (finallyDateOrUndefined?.isLeft()) {
-      finallyDateOrUndefined.value.forEach(error => {
-        this.addError(error as unknown as WeeklyFrequencyErrorsType);
-      });
+      this.addObjectError(finallyDateOrUndefined.value);
     }
 
     return this.errors();

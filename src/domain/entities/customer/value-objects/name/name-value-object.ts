@@ -1,7 +1,8 @@
 import { InvalidNameError } from '@/domain/entities/customer/errors';
 import { ValueObject } from '@/domain/entities/value-object';
 import { FieldIsRequiredError } from '@/domain/shared/errors';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 
 type ErrorsNameType = InvalidNameError | FieldIsRequiredError;
 

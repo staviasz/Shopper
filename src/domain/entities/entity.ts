@@ -1,5 +1,6 @@
 import { UuidAdapter } from '@/infra/id/uuid-adapter/uuid-adapter';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 import { InvalidFieldError } from '../shared/errors';
 
 type Props = { id: string } & Record<string, any>;
@@ -36,6 +37,10 @@ export abstract class Entity<T extends Props> {
       return;
     }
     this._errors.push(error);
+  }
+
+  protected static addObjectError({ errors }: { errors: string[] }): void {
+    errors.forEach(error => this.addError(new Error(error)));
   }
 
   protected static clearErrors(): void {

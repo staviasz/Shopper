@@ -12,7 +12,10 @@ export const swaggerSetup = (app: INestApplication<any>): void => {
       type: 'apiKey',
       in: 'header',
     })
-    .setLicense(`${APP_LICENSE} license`, 'https://github.com/RoutinelyOrganization/routinely-api/blob/develop/LICENSE')
+    .setLicense(
+      `${APP_LICENSE} license`,
+      'https://github.com/RoutinelyOrganization/routinely-api/blob/develop/LICENSE',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

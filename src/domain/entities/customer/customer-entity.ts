@@ -1,9 +1,8 @@
-import { ResponseCustomerEntityType } from '@/domain/entities/customer/types';
+import type { ResponseCustomerEntityType } from '@/domain/entities/customer/types';
 import { Entity } from '@/domain/entities/entity';
 import { left, right } from '@/shared/either';
-import { makeErrorsInObjOfArray } from '@/shared/make-errors-in-obj-of-array';
-import { CustomerEntityModel, CustomerModel } from './models';
-import { AcceptTermsType, AcceptTermsValueObject, EmailValueObject, NameValueObject } from './value-objects';
+import type { CustomerEntityModel, CustomerModel } from './models';
+import { AcceptTermsValueObject, EmailValueObject, NameValueObject } from './value-objects';
 
 export class CustomerEntity extends Entity<CustomerEntityModel> {
   private constructor(protected props: CustomerEntityModel) {
@@ -19,7 +18,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
     return this.props.email.value;
   }
 
-  get acceptedTerms(): AcceptTermsType {
+  get acceptedTerms(): boolean {
     return this.props.acceptedTerms.value;
   }
 
@@ -27,8 +26,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
     const result = this.validate(data) as CustomerEntityModel;
 
     if (!result) {
-      const formattedErrors = makeErrorsInObjOfArray(this.formatErrors());
-      return left(formattedErrors);
+      return left(this.errors()!);
     }
 
     return right(
@@ -53,7 +51,7 @@ export class CustomerEntity extends Entity<CustomerEntityModel> {
 
     for (const result of results) {
       if (result.isLeft()) {
-        this.addError(result.value);
+        this.addObjectError(result.value);
       }
     }
 

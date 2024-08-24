@@ -1,7 +1,8 @@
 import { CategoriesEnumType } from '@/domain/entities/activity/types';
 import { ValueObject } from '@/domain/entities/value-object';
 import { FieldIsRequiredError, InvalidFieldsValuesError } from '@/domain/shared/errors';
-import { Either, left, right } from '@/shared/either';
+import type { Either } from '@/shared/either';
+import { left, right } from '@/shared/either';
 
 const KeysCategories = Object.values(CategoriesEnumType);
 

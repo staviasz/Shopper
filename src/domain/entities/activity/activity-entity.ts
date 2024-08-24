@@ -1,4 +1,4 @@
-import {
+import type {
   ActivityEntityModel,
   ActivityModel,
   ResponseEntityActivityType,
@@ -13,7 +13,6 @@ import {
   WeeklyFrequencyValueObject,
 } from '@/domain/entities/activity/value-objects';
 import { left, right } from '@/shared/either';
-import { makeErrorsInObjOfArray } from '@/shared/make-errors-in-obj-of-array';
 import { Entity } from '../entity';
 
 export class ActivityEntity extends Entity<ActivityEntityModel> {
@@ -54,8 +53,7 @@ export class ActivityEntity extends Entity<ActivityEntityModel> {
     const result = this.validate(props) as ActivityEntityModel;
 
     if (!result) {
-      const formattedErrors = makeErrorsInObjOfArray(this.formatErrors());
-      return left(formattedErrors);
+      return left(this.errors()!);
     }
 
     return right(
@@ -73,7 +71,8 @@ export class ActivityEntity extends Entity<ActivityEntityModel> {
   }
 
   private static validate(props: ActivityModel): ActivityEntityModel | void {
-    const { id, customerId, title, description, executeDateTime, type, category, weeklyFrequency } = props;
+    const { id, customerId, title, description, executeDateTime, type, category, weeklyFrequency } =
+      props;
 
     const idOrError = this.validateId(id);
     const customerIdOrError = this.validateId(customerId);
@@ -93,12 +92,13 @@ export class ActivityEntity extends Entity<ActivityEntityModel> {
       categoryOrError,
     ];
 
-    const weeklyFrequencyOrError = weeklyFrequency && WeeklyFrequencyValueObject.create(weeklyFrequency);
+    const weeklyFrequencyOrError =
+      weeklyFrequency && WeeklyFrequencyValueObject.create(weeklyFrequency);
     weeklyFrequencyOrError && results.push(weeklyFrequencyOrError as any); // typed with any to avoid putting all types in the array
 
     for (const result of results) {
       if (result.isLeft()) {
-        this.addError(result.value);
+        this.addObjectError(result.value);
       }
     }
 

@@ -1,4 +1,4 @@
-type Props = Record<string, any> | string;
+type Props = Record<string, any> | string | boolean;
 
 export abstract class ValueObject<T extends Props = string> {
   private static _errors: Error[] = [];
@@ -18,5 +18,8 @@ export abstract class ValueObject<T extends Props = string> {
 
   protected static clearErrors(): void {
     this._errors = [];
+  }
+  protected static addObjectError({ errors }: { errors: string[] }): void {
+    errors.forEach(error => this.addError(new Error(error)));
   }
 }
