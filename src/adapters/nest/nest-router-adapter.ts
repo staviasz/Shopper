@@ -1,5 +1,5 @@
 import type { ControllerContractPresentation } from '@/presentation/contracts';
-import { Presenter } from '@/presentation/presenter';
+import { Presenter } from '@/presentation/presenter/presenter-presentation';
 import type { ControllerRequestType } from '@/presentation/types';
 import type { Request, Response } from 'express';
 

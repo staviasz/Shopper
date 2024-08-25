@@ -8,6 +8,7 @@
   "scripts": {
     "docker:dev-build": "docker-compose -f docker/dev/docker-compose.yml up --build",
     "docker:dev": "docker-compose -f docker/dev/docker-compose.yml up",
+    "docker:dev-kill": "docker-compose -f docker/dev/docker-compose.yml stop",
     "docker:pg-test-build": "npm run docker:pg-test-rm && docker-compose -f ./docker/test/docker-compose.postgres.yml up -d --build",
     "docker:pg-test-run": "docker-compose -f ./docker/test/docker-compose.postgres.yml up -d",
     "docker:pg-test-kill": "docker-compose -f ./docker/test/docker-compose.postgres.yml stop",
