@@ -38,5 +38,4 @@ module.exports = {
   passWithNoTests: true,
   noStackTrace: true,
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
-  testSequencer: './test-sequencer.js',
 };
