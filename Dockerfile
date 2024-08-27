@@ -6,11 +6,11 @@ RUN wget -O /usr/local/bin/dockerize https://github.com/jwilder/dockerize/releas
 
 WORKDIR /app
 
-COPY ../../package*.json .
+COPY package*.json .
 
 RUN npm install
 
-COPY ../../ .
+COPY . .
 
 
 EXPOSE 3000

@@ -3,13 +3,13 @@ version: '3.8'
 services:
   backend:
     build:
-      context: '../../'
-      dockerfile: docker/dev/Dockerfile.app
+      context: .
+      dockerfile: Dockerfile
     container_name: routnely-backend
     ports:
       - '3000:3000'
     volumes:
-      - ../../:/app
+      - ./:/app
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
     depends_on:
