@@ -1,11 +1,13 @@
 import { UuidAdapter } from '@/infra/id/uuid-adapter/uuid-adapter';
 import type { Either } from '@/shared/either';
 import { left, right } from '@/shared/either';
-import { InvalidFieldError } from '../shared/errors';
+import { InvalidFieldError } from './measure/errors';
+import type { ObjectError } from './measure/errors/custon-error';
+import { CustomError } from './measure/errors/custon-error';
 
 type Props = { id: string } & Record<string, any>;
 export abstract class Entity<T extends Props> {
-  private static _errors: Error[] = [];
+  private static _errors: CustomError[] = [];
   protected readonly _id: string;
 
   protected constructor(protected readonly props: T) {
@@ -27,20 +29,20 @@ export abstract class Entity<T extends Props> {
     return right(returnId);
   }
 
-  protected static errors(): Error[] | null {
-    return this._errors.length ? this._errors : null;
+  protected static errors(): CustomError[] | CustomError | null {
+    if (!this._errors.length) return null;
+
+    return this._errors.length === 1 ? this._errors[0] : this._errors;
   }
 
-  protected static addError(error: Error | Error[]): void {
-    if (Array.isArray(error)) {
-      this._errors = this._errors.concat(error);
-      return;
-    }
-    this._errors.push(error);
+  protected static addError(error: CustomError | CustomError[]): void {
+    Array.isArray(error) ? this._errors.push(...error) : this._errors.push(error);
   }
 
-  protected static addObjectError({ errors }: { errors: string[] }): void {
-    errors.forEach(error => this.addError(new Error(error)));
+  protected static addObjectError(error: ObjectError | ObjectError[]): void {
+    Array.isArray(error)
+      ? this._errors.push(...error.map(err => new CustomError(err)))
+      : this._errors.push(new CustomError(error));
   }
 
   protected static clearErrors(): void {
