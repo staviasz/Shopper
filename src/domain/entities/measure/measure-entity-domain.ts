@@ -1,6 +1,7 @@
 import {
   FieldIsRequiredError,
   InvalidFieldError,
+  InvalidFieldPositiveNumberError,
   InvalidFieldsValuesError,
 } from '@/domain/entities/measure/errors';
 import { left, right, type Either } from '@/shared/either';
@@ -13,15 +14,10 @@ import { MeasureEnumType } from './types/measure-enum-type';
 export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
   private constructor(props: MeasureEntityModel) {
     super(props);
-    Object.freeze(this);
   }
 
   get customerCode(): string {
     return this.props.customerCode;
-  }
-
-  get imageBase64(): string {
-    return this.props.imageBase64;
   }
 
   get dateTime(): Date {
@@ -32,14 +28,18 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return this.props.type;
   }
 
-  static create(props: MeasureModel): Either<CustomError, MeasureEntityDomain> {
+  get value(): number | undefined {
+    return this.props.value;
+  }
+
+  static create(props: MeasureModel): Either<CustomError[], MeasureEntityDomain> {
     this.clearErrors();
 
     const idOrError = this.validateId(props.id);
     const costumerOrError = this.hasCustomerCode(props.customerCode);
-    const imageBase64OrError = this.hasImageBase64(props.imageBase64);
     const dateTimeOrError = this.hasDateTime(props.dateTime);
     const typeOrError = this.hasCorrectType(props.type);
+    const valueOrError = this.validateValue(props.value);
 
     if (this.errors()) {
       return left(this.errors()!);
@@ -49,9 +49,9 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
       new MeasureEntityDomain({
         id: idOrError.value as string,
         customerCode: costumerOrError as string,
-        imageBase64: imageBase64OrError as string,
         dateTime: dateTimeOrError as Date,
         type: typeOrError as MeasureEnumType,
+        value: valueOrError as number,
       }),
     );
   }
@@ -61,19 +61,6 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
       this.addError(new FieldIsRequiredError('código do cliente'));
     }
     return this.errors() ? null : costumerCode;
-  }
-
-  private static hasImageBase64(imageBase64: string): string | null {
-    if (!imageBase64) {
-      this.addError(new FieldIsRequiredError('imagem base64'));
-    }
-
-    const base64ImageRegex = /^data:image\/(png|jpeg|jpg|gif|webp);base64,/;
-
-    if (!base64ImageRegex.test(imageBase64)) {
-      this.addError(new InvalidFieldError('imagem base64'));
-    }
-    return this.errors() ? null : imageBase64;
   }
 
   private static hasDateTime(dateTime: Date): Date | null {
@@ -95,5 +82,25 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
       this.addError(new InvalidFieldsValuesError('tipo', KeysType));
     }
     return this.errors() ? null : MeasureEnumType[type];
+  }
+
+  private static validateValue(value?: number): number | null {
+    if (value !== 0 && !value) return null;
+
+    if (value <= 0) {
+      Entity.addError(new InvalidFieldPositiveNumberError('valor'));
+    }
+    if (!Number.isInteger(value)) {
+      Entity.addError(new InvalidFieldError('valor'));
+    }
+
+    return Entity.errors() ? null : value;
+  }
+
+  changeMeasureValue(value: number): Either<CustomError[], MeasureEntityDomain> {
+    Entity.clearErrors();
+    MeasureEntityDomain.validateValue(value);
+
+    return Entity.errors() ? left(Entity.errors()!) : right(this);
   }
 }

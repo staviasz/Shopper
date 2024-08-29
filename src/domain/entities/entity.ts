@@ -29,10 +29,8 @@ export abstract class Entity<T extends Props> {
     return right(returnId);
   }
 
-  protected static errors(): CustomError[] | CustomError | null {
-    if (!this._errors.length) return null;
-
-    return this._errors.length === 1 ? this._errors[0] : this._errors;
+  protected static errors(): CustomError[] | null {
+    return this._errors.length ? this._errors : null;
   }
 
   protected static addError(error: CustomError | CustomError[]): void {

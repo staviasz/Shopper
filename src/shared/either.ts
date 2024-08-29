@@ -6,11 +6,8 @@ export type Either<L extends EitherError, R> = Left<L, R> | Right<L, R>;
 class Left<L extends EitherError, R> {
   readonly value: ObjectError | ObjectError[];
 
-  constructor(error: L) {
-    // Formata o erro diretamente no construtor
-    this.value = Array.isArray(error)
-      ? error.map(err => ({ error_code: err.name, error_description: err.message }))
-      : { error_code: error.name, error_description: error.message };
+  constructor(private error: L) {
+    this.value = this.formatedValue();
   }
 
   isLeft(): this is Left<L, R> {
@@ -19,6 +16,16 @@ class Left<L extends EitherError, R> {
 
   isRight(): this is Right<L, R> {
     return false;
+  }
+
+  formatedValue(): ObjectError | ObjectError[] {
+    if (Array.isArray(this.error) && this.error.length > 1) {
+      return this.error.map(err => ({ error_code: err.name, error_description: err.message }));
+    }
+
+    return Array.isArray(this.error)
+      ? { error_code: this.error[0].name, error_description: this.error[0].message }
+      : { error_code: this.error.name, error_description: this.error.message };
   }
 }
 
@@ -33,10 +40,10 @@ class Right<L extends EitherError, R> {
     return true;
   }
 }
-
-export const left = <L extends EitherError, R>(error: L): Left<L, R> => {
+export function left<L extends EitherError, R>(error: L): Left<L, R>;
+export function left<L extends EitherError, R>(error: L): Left<L, R> {
   return new Left<L, R>(error);
-};
+}
 
 export function right<L extends EitherError, R extends void>(result?: R): Right<L, R>;
 export function right<L extends EitherError, R>(result: R): Right<L, R>;

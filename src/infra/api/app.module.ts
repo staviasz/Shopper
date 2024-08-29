@@ -1,7 +1,7 @@
-import { CustomerModule } from '@/infra/api/routes/customer/customer.module';
 import { Module } from '@nestjs/common';
+import { MeasureModule } from './routes/measure/measure.module';
 
 @Module({
-  imports: [CustomerModule],
+  imports: [MeasureModule],
 })
 export class AppModule {}

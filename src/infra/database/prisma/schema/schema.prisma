@@ -6,3 +6,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Measure {
+  id             String      @id @default(uuid())
+  imageUrl       String      @map("image_url")
+  type           MeasureType
+  dateTimeOfRead DateTime    @map("datetime_of_read")
+  value          Int
+  updatedAt      DateTime    @default(now()) @updatedAt @map("updated_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  customerCode   String      @map("customer_code")
+}
+
+enum MeasureType {
+  GAS
+  WATER
+}

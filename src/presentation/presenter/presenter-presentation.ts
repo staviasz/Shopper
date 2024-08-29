@@ -3,6 +3,9 @@ export class Presenter {
     switch (acceptHeader) {
       case 'application/json':
         return data;
+
+      default:
+        return data;
     }
   }
 }

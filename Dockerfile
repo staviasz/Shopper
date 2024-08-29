@@ -4,6 +4,7 @@ RUN wget -O /usr/local/bin/dockerize https://github.com/jwilder/dockerize/releas
   && tar -C /usr/local/bin -xzvf /usr/local/bin/dockerize \
   && chmod +x /usr/local/bin/dockerize
 
+
 WORKDIR /app
 
 COPY package*.json .
@@ -11,7 +12,6 @@ COPY package*.json .
 RUN npm install
 
 COPY . .
-
 
 EXPOSE 3000
 

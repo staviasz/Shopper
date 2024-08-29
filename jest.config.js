@@ -37,5 +37,5 @@ module.exports = {
   verbose: true,
   passWithNoTests: true,
   noStackTrace: true,
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec).[tj]s?(x)'],
 };

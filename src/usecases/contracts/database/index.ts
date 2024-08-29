@@ -1,1 +1,1 @@
-export * from './customer/customer-repository-contract-usecase';
+export * from './measure/measure-repository-contract-usecase';

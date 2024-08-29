@@ -1,5 +1,10 @@
-export class InvalidFieldPositiveNumberError extends Error {
+import { CustomError } from './custon-error';
+
+export class InvalidFieldPositiveNumberError extends CustomError {
   constructor(field: string) {
-    super(`O campo ${field} deve ser um número positivo`);
+    super({
+      error_code: 'INVALID_DATA',
+      error_description: `O campo ${field} deve ser um número positivo`,
+    });
   }
 }
