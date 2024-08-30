@@ -35,7 +35,6 @@
     "@prisma/client": "^5.16.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
-    "jimp": "^0.22.12",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "uuid": "^10.0.0",

@@ -24,7 +24,7 @@ export class MeasureListByCustomerRoute {
     required: true,
   })
   @ApiQuery({
-    name: '“measure_type”',
+    name: 'measure_type',
     enum: MeasureEnumType,
     required: false,
   })
