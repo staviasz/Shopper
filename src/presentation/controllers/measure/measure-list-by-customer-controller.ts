@@ -33,7 +33,7 @@ export class MeasureListByCustomerController implements ControllerContractPresen
   formatedDataRequest(data: ControllerRequestType) {
     return {
       customerCode: data.params.customer_code,
-      type: data.query?.type,
+      type: data.query?.measure_type,
     };
   }
 

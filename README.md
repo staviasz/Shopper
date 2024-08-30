@@ -1,27 +1,33 @@
-<p align="center" >
-  <a href="https://github.com/RoutinelyOrganization/" target="blank"><img src="./logo-routnely.png" width="200" alt="Routnely Logo" style="border-radius: 8px"/></a>
-</p>
-
-
 ## Descrição
 
-A [Routinely](https://mudar_link_da_aplicação_em_deploy) é uma ferramenta projetada para ajudar a manter uma rotina saudável e equilibrada, permitindo ao usuário registrar suas atividades diárias, incluindo trabalho, exercícios, hobbies e tarefas domésticas.
+Teste tecnico Shopper
 
-## Instalação
-
-```bash
-$ npm install
-```
 ## Inicialização
 
-  - [Metodos de inicialização da aplicação](./docs/initial-application.md)
+Altere as variavéis de ambiente (.env.example na raiz)
+
+```bash
+# cria a imagem docker e sobe a aplicação com todos os serviços, o DATABASE_URL já é iniciado pelo compose
+$ docker:dev-build
+
+# Caso ja tenha a imagem construida
+$ docker:dev
+```
+
 
 ## Testes
-  - [execução dos testes](./docs/tests.md)
+
+```bash
+
+#testes unitários
+$ npm run test
+```
 
 ## Rotas
   - A aplicação tambem esta documentada no swagger podendo ser acessada na rota `/api`
 
   | Nome                          | Rota                          | File                                                                  | 
   |-------------------------------|-------------------------------|-----------------------------------------------------------------------|
-  | Registro de Usuário           | Post `/user`                  |[documentação da rota](./docs/routes/customer/register-customer.doc.md)|
+  |upload de imagem para o gemini | Post `/upload`                |[documentação da rota](./docs/routes/measure/upload-measure.doc.md)|
+  |Confirmação do valor da image  | Patch `/confirm`              |[documentação da rota](./docs/routes/measure/confirm-measure.doc.md)|
+  |Busca as medições referente a um customer especifico  | Get `/<customer_code>/list`      |[documentação da rota](./docs/routes/measure/list-by-customer-measure.doc.md)|

@@ -53,7 +53,7 @@ describe('MeasureListByCustomerController', () => {
     const { sut } = makeSut();
     const result = await sut.handle({
       params: { customer_code: '123' },
-      query: { type: 'invalid' },
+      query: { measure_type: 'invalid' },
     });
     expect(result).toEqual({
       statusCode: 400,
