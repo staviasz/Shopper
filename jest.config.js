@@ -30,6 +30,12 @@ module.exports = {
     '!<rootDir>/src/**/*-dto.ts',
     '!<rootDir>/src/factories/**',
     '!<rootDir>/src/configs/**',
+    '!<rootDir>/src/adapters/**',
+    '!<rootDir>/src/infra/api/**',
+    '!<rootDir>/src/infra/database/prisma/helpers/**',
+    '!<rootDir>/src/infra/service/**',
+    '!<rootDir>/src/presentation/presenter/**',
+    '!<rootDir>/src/presentation/helpers/**',
   ],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',

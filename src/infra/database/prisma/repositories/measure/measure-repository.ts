@@ -107,15 +107,17 @@ export class MeasureRepository implements MeasureRepositoryContractsUsecase {
       },
     });
 
-    const listMeasure: MeasureRepositoryDto[] = list.map(measure => ({
-      id: measure.id,
-      customerCode: measure.customerCode,
-      dateTime: measure.dateTimeOfRead,
-      type: measure.type as MeasureEnumType,
-      imageUrl: measure.imageUrl,
-      value: measure.value,
-    }));
+    const listMeasure: MeasureRepositoryDto[] =
+      list &&
+      list.map(measure => ({
+        id: measure.id,
+        customerCode: measure.customerCode,
+        dateTime: measure.dateTimeOfRead,
+        type: measure.type as MeasureEnumType,
+        imageUrl: measure.imageUrl,
+        value: measure.value,
+      }));
 
-    return right(listMeasure.length ? listMeasure : null);
+    return right(listMeasure && listMeasure.length ? listMeasure : null);
   }
 }
