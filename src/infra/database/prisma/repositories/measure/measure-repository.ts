@@ -1,4 +1,5 @@
 import type { CustomError } from '@/domain/entities/measure/errors/custon-error';
+import type { MeasureEntityModel } from '@/domain/entities/measure/models';
 import type { MeasureEnumType } from '@/domain/entities/measure/types/measure-enum-type';
 import { right, type Either } from '@/shared/either';
 import type {
@@ -11,6 +12,7 @@ export class MeasureRepository implements MeasureRepositoryContractsUsecase {
   constructor(private client: PrismaClient) {}
 
   async findByTypeAndCurrentMonth(
+    customerCode: string,
     type: string,
     date: Date,
   ): Promise<Either<CustomError, MeasureRepositoryDto | null>> {
@@ -21,6 +23,7 @@ export class MeasureRepository implements MeasureRepositoryContractsUsecase {
 
     const measure = await prisma.measure.findFirst({
       where: {
+        customerCode,
         type: type.toUpperCase() as MeasureEnumType,
         dateTimeOfRead: {
           gte: startOfMonth,
@@ -90,5 +93,29 @@ export class MeasureRepository implements MeasureRepositoryContractsUsecase {
             Value: measure?.value,
           } as MeasureRepositoryDto),
     );
+  }
+  async findByFieldList<K extends keyof MeasureEntityModel | 'imageUrl'>(
+    field: K,
+    value: MeasureRepositoryDto[K],
+    filter?: { field: K; value: MeasureRepositoryDto[K] } | undefined,
+  ): Promise<Either<Error, MeasureRepositoryDto[] | null>> {
+    const prisma = this.client;
+    const list = await prisma.measure.findMany({
+      where: {
+        [field]: value,
+        ...(filter ? { [filter.field]: filter.value } : {}),
+      },
+    });
+
+    const listMeasure: MeasureRepositoryDto[] = list.map(measure => ({
+      id: measure.id,
+      customerCode: measure.customerCode,
+      dateTime: measure.dateTimeOfRead,
+      type: measure.type as MeasureEnumType,
+      imageUrl: measure.imageUrl,
+      value: measure.value,
+    }));
+
+    return right(listMeasure.length ? listMeasure : null);
   }
 }

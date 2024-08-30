@@ -4,17 +4,12 @@ import type { CustomError } from '@/domain/entities/measure/errors/custon-error'
 import { UuidAdapter } from '@/infra/id/uuid-adapter/uuid-adapter';
 import type { Either } from '@/shared/either';
 import { right } from '@/shared/either';
-import type {
-  MeasureRepositoryContractsUsecase,
-  MeasureRepositoryDto,
-} from '@/usecases/contracts/database';
+import type { MeasureRepositoryDto } from '@/usecases/contracts/database';
+import type { MeasuresConfirmRepositoryUsecaseContract } from '@/usecases/contracts/database/measure/measures-confirm-contract-usecase';
 import { ConfirmMeasureUsecase } from '../confirm-measure-usecase';
 
 const makeRepositoryStub = () => {
-  class RepositoryStub implements MeasureRepositoryContractsUsecase {
-    create(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {
-      throw new Error('Method not implemented.');
-    }
+  class RepositoryStub implements MeasuresConfirmRepositoryUsecaseContract {
     findByField<K extends keyof MeasureRepositoryDto>(
       field: K,
       value: MeasureRepositoryDto[K],
@@ -30,13 +25,6 @@ const makeRepositoryStub = () => {
           hasConfirmed: false,
         } as MeasureRepositoryDto),
       );
-    }
-
-    findByTypeAndCurrentMonth(
-      type: string,
-      date: Date,
-    ): Promise<Either<Error, MeasureRepositoryDto | null>> {
-      return Promise.resolve(right(null));
     }
 
     update(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {

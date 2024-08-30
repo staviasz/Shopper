@@ -17,13 +17,14 @@ const makeRepositoryStub = () => {
 describe('MeasureRepository Test', () => {
   it('Should call findByTypeAndCurrentMonth with correct values', async () => {
     const repository = makeRepositoryStub();
+    const customerCode = '123';
     const type = 'WATER';
     const date = new Date();
 
     const spy = jest.spyOn(repository, 'findByTypeAndCurrentMonth');
 
-    await repository.findByTypeAndCurrentMonth(type, date);
-    expect(spy).toHaveBeenCalledWith(type, date);
+    await repository.findByTypeAndCurrentMonth(customerCode, type, date);
+    expect(spy).toHaveBeenCalledWith(customerCode, type, date);
   });
 
   it('Should call create with correct values', async () => {

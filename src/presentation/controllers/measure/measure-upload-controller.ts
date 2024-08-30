@@ -47,7 +47,7 @@ export class MeasureUploadController implements ControllerContractPresentation {
     return {
       imageBase64: body.image,
       dateTime: body.measure_datetime,
-      type: body.measure_type,
+      type: body.measure_type?.toUpperCase(),
       customerCode: body.customer_code,
     };
   }

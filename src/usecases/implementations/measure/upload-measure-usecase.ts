@@ -7,12 +7,12 @@ import type { ObjectError } from '@/domain/entities/measure/errors/custon-error'
 import { CustomError } from '@/domain/entities/measure/errors/custon-error';
 import { MeasureEntityDomain } from '@/domain/entities/measure/measure-entity-domain';
 import { left, right } from '@/shared/either';
-import type { MeasureRepositoryContractsUsecase } from '@/usecases/contracts/database';
+import type { MeasuresUploadRepositoryUsecaseContract } from '@/usecases/contracts/database/measure/measures-upload-contract-usecase';
 import type { ExternalRequestMeasureValue } from '@/usecases/contracts/external-requests';
 
 export class UploadMeasureUsecase implements UploadMeasureUseCaseContractDomain {
   constructor(
-    private repository: MeasureRepositoryContractsUsecase,
+    private repository: MeasuresUploadRepositoryUsecaseContract,
     private externalRequest: ExternalRequestMeasureValue,
   ) {}
   async perform(measure: InputUploadMeasureUseCase): Promise<OutputUploadMeasureUseCase> {
@@ -24,7 +24,11 @@ export class UploadMeasureUsecase implements UploadMeasureUseCaseContractDomain 
 
     const { type, dateTime, customerCode, id } = measureEntity.value;
 
-    const existMeasure = await this.repository.findByTypeAndCurrentMonth(type, dateTime);
+    const existMeasure = await this.repository.findByTypeAndCurrentMonth(
+      customerCode,
+      type,
+      dateTime,
+    );
     if (existMeasure.isLeft() || existMeasure.value) {
       return left(
         new CustomError({

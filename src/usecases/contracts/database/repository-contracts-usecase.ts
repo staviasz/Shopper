@@ -12,3 +12,19 @@ export interface CreateRepositoryContract<T> {
 export interface UpdateRepositoryContract<T> {
   update(data: Partial<T>): Promise<Either<CustomError, void>>;
 }
+
+export interface FindByFieldListRepositoryContract<T> {
+  findByFieldList<K extends keyof T>(
+    field: K,
+    value: T[K],
+    filter?: { field: K; value: T[K] },
+  ): Promise<Either<Error, T[] | null>>;
+}
+
+export interface FindMeasureByTypeAndCurrentMonth<T> {
+  findByTypeAndCurrentMonth: (
+    costumerCode: string,
+    type: string,
+    date: Date,
+  ) => Promise<Either<CustomError, T | null>>;
+}

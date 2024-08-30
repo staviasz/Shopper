@@ -3,10 +3,8 @@ import type { InputUploadMeasureUseCase } from '@/domain/contracts/measure/uploa
 import type { CustomError } from '@/domain/entities/measure/errors/custon-error';
 import { MeasureEnumType } from '@/domain/entities/measure/types/measure-enum-type';
 import { right, type Either } from '@/shared/either';
-import type {
-  MeasureRepositoryContractsUsecase,
-  MeasureRepositoryDto,
-} from '@/usecases/contracts/database';
+import type { MeasureRepositoryDto } from '@/usecases/contracts/database';
+import type { MeasuresUploadRepositoryUsecaseContract } from '@/usecases/contracts/database/measure/measures-upload-contract-usecase';
 import type {
   ExternalRequestMeasureValue,
   InputExternalRequestMeasureValue,
@@ -23,24 +21,15 @@ const data: InputUploadMeasureUseCase = {
 };
 
 const makeRepositoryStub = () => {
-  class RepositoryStub implements MeasureRepositoryContractsUsecase {
+  class RepositoryStub implements MeasuresUploadRepositoryUsecaseContract {
     findByTypeAndCurrentMonth(
+      customerCode: string,
       type: string,
       date: Date,
     ): Promise<Either<Error, MeasureRepositoryDto | null>> {
       return Promise.resolve(right(null));
     }
     create(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {
-      return Promise.resolve(right());
-    }
-    findByField<K extends keyof MeasureRepositoryDto>(
-      field: K,
-      value: MeasureRepositoryDto[K],
-    ): Promise<Either<Error, MeasureRepositoryDto | null>> {
-      return Promise.resolve(right(null));
-    }
-
-    update(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {
       return Promise.resolve(right());
     }
   }
@@ -95,7 +84,11 @@ describe('UploadMeasureUsecase Unit Test', () => {
     const { sut, repository } = makeSut();
     const findByTypeAndCurrentMonthSpy = jest.spyOn(repository, 'findByTypeAndCurrentMonth');
     await sut.perform(data);
-    expect(findByTypeAndCurrentMonthSpy).toHaveBeenCalledWith(data.type, data.dateTime);
+    expect(findByTypeAndCurrentMonthSpy).toHaveBeenCalledWith(
+      data.customerCode,
+      data.type,
+      data.dateTime,
+    );
   });
 
   it("Should call ExternalRequest's execute with correct values", async () => {

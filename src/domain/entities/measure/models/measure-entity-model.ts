@@ -7,4 +7,5 @@ export type MeasureEntityModel = {
   type: MeasureEnumType;
   value?: number;
   hasConfirmed?: boolean;
+  imageUrl?: string;
 };

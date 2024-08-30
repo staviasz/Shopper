@@ -7,10 +7,10 @@ import type { ObjectError } from '@/domain/entities/measure/errors/custon-error'
 import { CustomError } from '@/domain/entities/measure/errors/custon-error';
 import { MeasureEntityDomain } from '@/domain/entities/measure/measure-entity-domain';
 import { left, right } from '@/shared/either';
-import type { MeasureRepositoryContractsUsecase } from '@/usecases/contracts/database';
+import type { MeasuresConfirmRepositoryUsecaseContract } from '@/usecases/contracts/database/measure/measures-confirm-contract-usecase';
 
 export class ConfirmMeasureUsecase implements ConfirmMeasureUseCaseContractDomain {
-  constructor(private repository: MeasureRepositoryContractsUsecase) {}
+  constructor(private repository: MeasuresConfirmRepositoryUsecaseContract) {}
   async perform(data: InputConfirmMeasureUseCase): Promise<OutputConfirmMeasureUseCase> {
     const { id, value } = data;
 

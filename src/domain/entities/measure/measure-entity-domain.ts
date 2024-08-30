@@ -36,6 +36,10 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return this.props.hasConfirmed || false;
   }
 
+  get imageUrl(): string | undefined {
+    return this.props.imageUrl;
+  }
+
   static create(props: MeasureModel): Either<CustomError[], MeasureEntityDomain> {
     this.clearErrors();
 
@@ -113,6 +117,12 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     MeasureEntityDomain.validateValue(value);
     this.props.hasConfirmed = true;
 
+    return Entity.errors() ? left(Entity.errors()!) : right(this);
+  }
+
+  changeImageUrl(imageUrl: string): Either<CustomError[], MeasureEntityDomain> {
+    Entity.clearErrors();
+    this.props.imageUrl = imageUrl;
     return Entity.errors() ? left(Entity.errors()!) : right(this);
   }
 }
