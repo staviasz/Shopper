@@ -12,10 +12,7 @@ export type UploadMeasureResultType = {
   measureUuid: string;
 };
 
-export type OutputUploadMeasureUseCase = Either<
-  CustomError[] | CustomError,
-  UploadMeasureResultType
->;
+export type OutputUploadMeasureUseCase = Either<CustomError, UploadMeasureResultType>;
 
 export interface UploadMeasureUseCaseContractDomain {
   perform: (measure: InputUploadMeasureUseCase) => Promise<OutputUploadMeasureUseCase>;

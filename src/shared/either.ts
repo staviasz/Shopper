@@ -1,13 +1,14 @@
 import type { CustomError, ObjectError } from '@/domain/entities/measure/errors/custon-error';
 
-type EitherError = CustomError | CustomError[];
+type EitherError = CustomError;
 
 export type Either<L extends EitherError, R> = Left<L, R> | Right<L, R>;
 class Left<L extends EitherError, R> {
-  readonly value: ObjectError | ObjectError[];
+  readonly value: ObjectError;
+  // constructor(readonly value: L) {}
 
   constructor(private error: L) {
-    this.value = this.formatedValue();
+    this.value = { error_code: this.error.name, error_description: this.error.message };
   }
 
   isLeft(): this is Left<L, R> {
@@ -18,15 +19,15 @@ class Left<L extends EitherError, R> {
     return false;
   }
 
-  formatedValue(): ObjectError | ObjectError[] {
-    if (Array.isArray(this.error) && this.error.length > 1) {
-      return this.error.map(err => ({ error_code: err.name, error_description: err.message }));
-    }
+  // formatedValue(): ObjectError | ObjectError[] {
+  //   if (Array.isArray(this.error) && this.error.length > 1) {
+  //     return this.error.map(err => ({ error_code: err.name, error_description: err.message }));
+  //   }
 
-    return Array.isArray(this.error)
-      ? { error_code: this.error[0].name, error_description: this.error[0].message }
-      : { error_code: this.error.name, error_description: this.error.message };
-  }
+  //   return Array.isArray(this.error)
+  //     ? { error_code: this.error[0].name, error_description: this.error[0].message }
+  //     : { error_code: this.error.name, error_description: this.error.message };
+  // }
 }
 
 class Right<L extends EitherError, R> {

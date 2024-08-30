@@ -145,18 +145,12 @@ describe('MeasureUploadController Unit Tests', () => {
     const response = await sut.handle({ body: {} });
 
     expect(response).toEqual({
-      body: [
-        { error_code: 'INVALID_DATA', error_description: 'O campo imagem base64 é obrigatório' },
-        { error_code: 'INVALID_DATA', error_description: 'O campo data é obrigatório' },
-        {
-          error_code: 'INVALID_DATA',
-          error_description: 'O campo tipo deve ter um dos seguintes valores: WATER, GAS',
-        },
-        {
-          error_code: 'INVALID_DATA',
-          error_description: 'O campo código do cliente é obrigatório',
-        },
-      ],
+      body: {
+        error_code: 'INVALID_DATA',
+        error_description:
+          'O campo imagem base64 é obrigatório, O campo data é obrigatório, O campo tipo deve ter um dos seguintes valores: WATER, GAS, O campo código do cliente é obrigatório',
+      },
+
       statusCode: 400,
     });
   });

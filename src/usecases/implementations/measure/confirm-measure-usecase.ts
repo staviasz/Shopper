@@ -45,9 +45,12 @@ export class ConfirmMeasureUsecase implements ConfirmMeasureUseCaseContractDomai
     return right({ success: true });
   }
 
-  formatedError(value: ObjectError | ObjectError[]): OutputConfirmMeasureUseCase {
-    return Array.isArray(value)
-      ? left(value.map(error => new CustomError(error)))
-      : left(new CustomError(value));
+  formatedError(value: ObjectError): OutputConfirmMeasureUseCase {
+    return left(
+      new CustomError({
+        error_code: value.error_code,
+        error_description: value.error_description,
+      }),
+    );
   }
 }

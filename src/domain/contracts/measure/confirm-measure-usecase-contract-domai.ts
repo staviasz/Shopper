@@ -7,7 +7,7 @@ export type InputConfirmMeasureUseCase = {
 };
 
 export type ConfirmedOutputType = { success: boolean };
-export type OutputConfirmMeasureUseCase = Either<CustomError | CustomError[], ConfirmedOutputType>;
+export type OutputConfirmMeasureUseCase = Either<CustomError, ConfirmedOutputType>;
 
 export interface ConfirmMeasureUseCaseContractDomain {
   perform: (data: InputConfirmMeasureUseCase) => Promise<OutputConfirmMeasureUseCase>;

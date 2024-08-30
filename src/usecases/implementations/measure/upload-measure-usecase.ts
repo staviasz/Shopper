@@ -30,12 +30,10 @@ export class UploadMeasureUsecase implements UploadMeasureUseCaseContractDomain 
       dateTime,
     );
     if (existMeasure.isLeft() || existMeasure.value) {
-      return left(
-        new CustomError({
-          error_code: 'DOUBLE_REPORT',
-          error_description: 'Leitura do mês já realizada',
-        }),
-      );
+      return this.formatedError({
+        error_code: 'DOUBLE_REPORT',
+        error_description: 'Leitura do mês já realizada',
+      });
     }
 
     const { measureValue, imageUrl } = await this.formatedExternalResponse(measure.imageBase64);
@@ -73,9 +71,12 @@ export class UploadMeasureUsecase implements UploadMeasureUseCaseContractDomain 
     return { imageUrl, measureValue: isNaN(measureValue) ? 0 : measureValue };
   }
 
-  formatedError(value: ObjectError | ObjectError[]): OutputUploadMeasureUseCase {
-    return Array.isArray(value)
-      ? left(value.map(error => new CustomError(error)))
-      : left(new CustomError(value));
+  formatedError(value: ObjectError): OutputUploadMeasureUseCase {
+    return left(
+      new CustomError({
+        error_code: value.error_code,
+        error_description: value.error_description,
+      }),
+    );
   }
 }

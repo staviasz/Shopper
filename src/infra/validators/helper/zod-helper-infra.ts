@@ -22,12 +22,11 @@ export class ZodHelper {
       if (error instanceof ZodError) {
         const { message } = error;
         const parseMessage = JSON.parse(message);
-        const errorsFormated = parseMessage.map(
-          (err: ZodObjectError) =>
-            new CustomError({ error_code: 'INVALID_DATA', error_description: err.message }),
-        );
+        const formatedMessages = parseMessage.map((err: ZodObjectError) => err.message).join(', ');
 
-        return left(errorsFormated);
+        return left(
+          new CustomError({ error_code: 'INVALID_DATA', error_description: formatedMessages }),
+        );
       }
       return left(error);
     }

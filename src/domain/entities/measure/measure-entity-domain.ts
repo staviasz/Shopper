@@ -40,7 +40,7 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return this.props.imageUrl;
   }
 
-  static create(props: MeasureModel): Either<CustomError[], MeasureEntityDomain> {
+  static create(props: MeasureModel): Either<CustomError, MeasureEntityDomain> {
     this.clearErrors();
 
     const idOrError = this.validateId(props.id);
@@ -105,14 +105,14 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return Entity.errors() ? null : value;
   }
 
-  changeMeasureValue(value: number): Either<CustomError[], MeasureEntityDomain> {
+  changeMeasureValue(value: number): Either<CustomError, MeasureEntityDomain> {
     Entity.clearErrors();
     MeasureEntityDomain.validateValue(value);
 
     return Entity.errors() ? left(Entity.errors()!) : right(this);
   }
 
-  changeConfirmation(value: number): Either<CustomError[], MeasureEntityDomain> {
+  changeConfirmation(value: number): Either<CustomError, MeasureEntityDomain> {
     Entity.clearErrors();
     MeasureEntityDomain.validateValue(value);
     this.props.hasConfirmed = true;
@@ -120,7 +120,7 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return Entity.errors() ? left(Entity.errors()!) : right(this);
   }
 
-  changeImageUrl(imageUrl: string): Either<CustomError[], MeasureEntityDomain> {
+  changeImageUrl(imageUrl: string): Either<CustomError, MeasureEntityDomain> {
     Entity.clearErrors();
     this.props.imageUrl = imageUrl;
     return Entity.errors() ? left(Entity.errors()!) : right(this);

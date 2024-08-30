@@ -29,8 +29,10 @@ export abstract class Entity<T extends Props> {
     return right(returnId);
   }
 
-  protected static errors(): CustomError[] | null {
-    return this._errors.length ? this._errors : null;
+  protected static errors(): CustomError | null {
+    if (this._errors.length === 0) return null;
+
+    return new CustomError({ error_code: 'INVALID_DATA', error_description: this.formatErrors() });
   }
 
   protected static addError(error: CustomError | CustomError[]): void {
@@ -47,7 +49,7 @@ export abstract class Entity<T extends Props> {
     this._errors = [];
   }
 
-  protected static formatErrors(): string[] {
-    return this._errors.map(error => error.message);
+  protected static formatErrors(): string {
+    return this._errors.map(error => error.message).join(', ');
   }
 }

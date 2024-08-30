@@ -45,14 +45,11 @@ describe('MeasureEntityDomain Unit Test', () => {
 
     expect(measure.isRight()).toBeFalsy();
     expect(measure.isLeft()).toBeTruthy();
-    expect(measure.value).toEqual([
-      { error_code: 'INVALID_DATA', error_description: 'O campo tipo é obrigatório' },
-      {
-        error_code: 'INVALID_DATA',
-        error_description: 'O campo tipo deve ter um dos seguintes valores: WATER, GAS',
-      },
-    ]);
-
+    expect(measure.value).toEqual({
+      error_code: 'INVALID_DATA',
+      error_description:
+        'O campo tipo é obrigatório, O campo tipo deve ter um dos seguintes valores: WATER, GAS',
+    });
     const measure2 = MeasureEntityDomain.create({
       ...data,
       type: 'teste' as any,
@@ -75,24 +72,11 @@ describe('MeasureEntityDomain Unit Test', () => {
 
     expect(measure.isRight()).toBeFalsy();
     expect(measure.isLeft()).toBeTruthy();
-    expect(measure.value).toEqual([
-      {
-        error_code: 'INVALID_DATA',
-        error_description: 'O campo código do cliente é obrigatório',
-      },
-      {
-        error_code: 'INVALID_DATA',
-        error_description: 'O campo data e hora é obrigatório',
-      },
-      {
-        error_code: 'INVALID_DATA',
-        error_description: 'O campo tipo é obrigatório',
-      },
-      {
-        error_code: 'INVALID_DATA',
-        error_description: 'O campo tipo deve ter um dos seguintes valores: WATER, GAS',
-      },
-    ]);
+    expect(measure.value).toEqual({
+      error_code: 'INVALID_DATA',
+      error_description:
+        'O campo código do cliente é obrigatório, O campo data e hora é obrigatório, O campo tipo é obrigatório, O campo tipo deve ter um dos seguintes valores: WATER, GAS',
+    });
   });
 
   it('Should return success', () => {

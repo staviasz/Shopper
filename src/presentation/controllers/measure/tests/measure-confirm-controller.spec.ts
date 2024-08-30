@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   ConfirmMeasureUseCaseContractDomain,
   InputConfirmMeasureUseCase,
@@ -9,7 +10,6 @@ import { MeasureConfirmController } from '../measure-confirm-controller';
 
 const makeMeasureUsecaseStub = () => {
   class MeasureUsecaseStub implements ConfirmMeasureUseCaseContractDomain {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async perform(data: InputConfirmMeasureUseCase): Promise<OutputConfirmMeasureUseCase> {
       return right({ success: true });
     }
@@ -43,16 +43,10 @@ describe('MeasureConfirmController spec', () => {
 
     expect(result).toEqual({
       statusCode: 400,
-      body: [
-        {
-          error_code: 'INVALID_DATA',
-          error_description: 'O campo id é obrigatório',
-        },
-        {
-          error_code: 'INVALID_DATA',
-          error_description: 'O campo valor é obrigatório',
-        },
-      ],
+      body: {
+        error_code: 'INVALID_DATA',
+        error_description: 'O campo id é obrigatório, O campo valor é obrigatório',
+      },
     });
   });
 

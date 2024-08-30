@@ -59,10 +59,11 @@ describe('UploadMeasureUsecase Unit Test', () => {
     const result = await sut.perform({ ...data, customerCode: '', dateTime: undefined as any });
 
     expect(result.isLeft()).toBeTruthy();
-    expect(result.value).toEqual([
-      { error_code: 'INVALID_DATA', error_description: 'O campo código do cliente é obrigatório' },
-      { error_code: 'INVALID_DATA', error_description: 'O campo data e hora é obrigatório' },
-    ]);
+    expect(result.value).toEqual({
+      error_code: 'INVALID_DATA',
+      error_description:
+        'O campo código do cliente é obrigatório, O campo data e hora é obrigatório',
+    });
   });
 
   it('Should return DOUBLE_REPORT if exists measure in the same month', async () => {
