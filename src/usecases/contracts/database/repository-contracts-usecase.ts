@@ -8,3 +8,7 @@ export interface FindByFieldRepositoryContract<T> {
 export interface CreateRepositoryContract<T> {
   create(data: T): Promise<Either<CustomError, void>>;
 }
+
+export interface UpdateRepositoryContract<T> {
+  update(data: Partial<T>): Promise<Either<CustomError, void>>;
+}

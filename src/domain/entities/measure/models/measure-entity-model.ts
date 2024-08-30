@@ -6,4 +6,5 @@ export type MeasureEntityModel = {
   dateTime: Date;
   type: MeasureEnumType;
   value?: number;
+  hasConfirmed?: boolean;
 };

@@ -98,18 +98,19 @@ describe('MeasureEntityDomain Unit Test', () => {
   it('Should return success', () => {
     const measure = MeasureEntityDomain.create(data);
 
-    const { id, customerCode, dateTime, type } = measure.value as MeasureEntityDomain;
+    const { id, customerCode, dateTime, type, hasConfirmed } = measure.value as MeasureEntityDomain;
 
     expect(measure.isRight()).toBeTruthy();
     expect(id).toEqual(expect.any(String));
     expect(customerCode).toEqual(data.customerCode);
     expect(dateTime).toEqual(data.dateTime);
     expect(type).toEqual(data.type);
+    expect(hasConfirmed).toBeFalsy();
   });
 
   it('Should return error in changeMeasureValue', () => {
     const measure = MeasureEntityDomain.create(data);
-    const value = 0;
+    const value = -1;
     const measureValue = (measure.value as MeasureEntityDomain).changeMeasureValue(value);
 
     expect(measureValue.isLeft()).toBeTruthy();
@@ -131,5 +132,33 @@ describe('MeasureEntityDomain Unit Test', () => {
     expect(dateTime).toEqual(data.dateTime);
     expect(type).toEqual(data.type);
     expect(value).toEqual(value);
+  });
+
+  it('Should return error in changeConfirmation', () => {
+    const measure = MeasureEntityDomain.create(data);
+    const value = -1;
+    const measureValue = (measure.value as MeasureEntityDomain).changeConfirmation(value);
+
+    expect(measureValue.isLeft()).toBeTruthy();
+    expect(measureValue.value).toEqual({
+      error_code: 'INVALID_DATA',
+      error_description: 'O campo valor deve ser um número positivo',
+    });
+  });
+
+  it('Should return success in changeConfirmation', () => {
+    const measure = MeasureEntityDomain.create(data);
+    const insertValue = 10;
+    const measureValue = (measure.value as MeasureEntityDomain).changeConfirmation(insertValue);
+    const { id, customerCode, dateTime, type, value, hasConfirmed } =
+      measureValue.value as MeasureEntityDomain;
+
+    expect(measureValue.isRight()).toBeTruthy();
+    expect(id).toEqual(expect.any(String));
+    expect(customerCode).toEqual(data.customerCode);
+    expect(dateTime).toEqual(data.dateTime);
+    expect(type).toEqual(data.type);
+    expect(value).toEqual(value);
+    expect(hasConfirmed).toBeTruthy();
   });
 });

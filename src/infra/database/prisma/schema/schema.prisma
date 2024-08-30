@@ -16,6 +16,7 @@ model Measure {
   updatedAt      DateTime    @default(now()) @updatedAt @map("updated_at")
   createdAt      DateTime    @default(now()) @map("created_at")
   customerCode   String      @map("customer_code")
+  hasConfirmed   Boolean
 }
 
 enum MeasureType {

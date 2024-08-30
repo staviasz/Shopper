@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { MeasureConfirmRoute } from './measure-confirm-route';
 import { MeasureUploadRoute } from './measure-upload-route';
 
 @Module({
-  controllers: [MeasureUploadRoute],
+  controllers: [MeasureUploadRoute, MeasureConfirmRoute],
 })
 export class MeasureModule {}

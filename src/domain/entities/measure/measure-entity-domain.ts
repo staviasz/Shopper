@@ -32,6 +32,10 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
     return this.props.value;
   }
 
+  get hasConfirmed(): boolean {
+    return this.props.hasConfirmed || false;
+  }
+
   static create(props: MeasureModel): Either<CustomError[], MeasureEntityDomain> {
     this.clearErrors();
 
@@ -87,7 +91,7 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
   private static validateValue(value?: number): number | null {
     if (value !== 0 && !value) return null;
 
-    if (value <= 0) {
+    if (value < 0) {
       Entity.addError(new InvalidFieldPositiveNumberError('valor'));
     }
     if (!Number.isInteger(value)) {
@@ -100,6 +104,14 @@ export class MeasureEntityDomain extends Entity<MeasureEntityModel> {
   changeMeasureValue(value: number): Either<CustomError[], MeasureEntityDomain> {
     Entity.clearErrors();
     MeasureEntityDomain.validateValue(value);
+
+    return Entity.errors() ? left(Entity.errors()!) : right(this);
+  }
+
+  changeConfirmation(value: number): Either<CustomError[], MeasureEntityDomain> {
+    Entity.clearErrors();
+    MeasureEntityDomain.validateValue(value);
+    this.props.hasConfirmed = true;
 
     return Entity.errors() ? left(Entity.errors()!) : right(this);
   }

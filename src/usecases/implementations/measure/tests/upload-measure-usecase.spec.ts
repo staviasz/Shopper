@@ -33,6 +33,16 @@ const makeRepositoryStub = () => {
     create(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {
       return Promise.resolve(right());
     }
+    findByField<K extends keyof MeasureRepositoryDto>(
+      field: K,
+      value: MeasureRepositoryDto[K],
+    ): Promise<Either<Error, MeasureRepositoryDto | null>> {
+      return Promise.resolve(right(null));
+    }
+
+    update(data: MeasureRepositoryDto): Promise<Either<CustomError, void>> {
+      return Promise.resolve(right());
+    }
   }
 
   return new RepositoryStub();
